@@ -7,6 +7,7 @@ import jakarta.persistence.*
 @Entity
 (name = "review")
 class Review (
+    @ManyToOne
     @Column(name = "book_id")
     val book : Book,
 
@@ -16,6 +17,7 @@ class Review (
 
     var comment : String,
 
+    @ManyToOne
     @Column(name = "member_id")
     val member : Member,
 ){

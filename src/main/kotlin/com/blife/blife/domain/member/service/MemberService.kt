@@ -7,7 +7,7 @@ import com.blife.blife.domain.member.repository.MemberRepository
 class MemberService (
     private val memberRepository: MemberRepository
 ){
-    fun signup(request: MemberSignupRequest):MemberRespose{
-
-    }
+//    fun signup(request: MemberSignupRequest):MemberRespose{
+//
+//    }
 }

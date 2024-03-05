@@ -2,7 +2,7 @@ package com.blife.blife.domain.book.external.booksearchapi.kakao
 
 import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
 import com.blife.blife.domain.book.external.booksearchapi.dto.BookSearchApiResponse
-import com.blife.blife.domain.book.external.booksearchapi.kakao.dto.KakaoBookSearchResponseDocuments
+import com.blife.blife.domain.book.external.booksearchapi.kakao.dto.KakaoBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
@@ -43,7 +43,7 @@ class KakaoBookSearchApiService(
 					.build()
 			}
 			.retrieve()
-			.toEntity(KakaoBookSearchResponseDocuments::class.java)
+			.toEntity(KakaoBookSearchResponse::class.java)
 
 		val resultData = responseEntity.body
 
@@ -63,7 +63,7 @@ class KakaoBookSearchApiService(
 					.build()
 			}
 			.retrieve()
-			.toEntity(KakaoBookSearchResponseDocuments::class.java)
+			.toEntity(KakaoBookSearchResponse::class.java)
 
 		val resultData = responseEntity.body
 

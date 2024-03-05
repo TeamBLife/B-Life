@@ -1,14 +1,16 @@
 package com.blife.blife.domain.book.external.booksearchapi.naver
 
+import com.blife.blife.domain.book.dto.BookResponse
 import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
-import com.blife.blife.domain.book.external.booksearchapi.dto.BookSearchApiResponse
 import com.blife.blife.domain.book.external.booksearchapi.naver.dto.NaverBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatusCode
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 
+@Component
 class NaverBookSearchApiService(
 	@Value("\${Naver_Client_Id}")
 	private val clientId: String,
@@ -32,12 +34,11 @@ class NaverBookSearchApiService(
 		}
 		.build()
 
-	override fun searchBookDetailInfo(isbn13: Long, page: Int): BookSearchApiResponse? {
+	override fun searchBookDetailInfo(isbn13: Long): BookResponse? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
 					.queryParam("d_isbn", isbn13)
-					.queryParam("start", page)
 					.build()
 			}
 			.retrieve()
@@ -51,7 +52,7 @@ class NaverBookSearchApiService(
 			null
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): List<BookSearchApiResponse>? {
+	override fun searchBookListByTitle(title: String, page: Int): List<BookResponse>? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder

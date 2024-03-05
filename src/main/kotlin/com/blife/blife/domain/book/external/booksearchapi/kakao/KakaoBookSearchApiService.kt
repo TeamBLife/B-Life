@@ -1,7 +1,7 @@
 package com.blife.blife.domain.book.external.booksearchapi.kakao
 
+import com.blife.blife.domain.book.dto.BookResponse
 import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
-import com.blife.blife.domain.book.external.booksearchapi.dto.BookSearchApiResponse
 import com.blife.blife.domain.book.external.booksearchapi.kakao.dto.KakaoBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
@@ -32,14 +32,13 @@ class KakaoBookSearchApiService(
 		}
 		.build()
 
-	override fun searchBookDetailInfo(isbn13: Long, page: Int): BookSearchApiResponse? {
+	override fun searchBookDetailInfo(isbn13: Long): BookResponse? {
 
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
 					.queryParam("query", isbn13)
 					.queryParam("target", "isbn")
-					.queryParam("page", page)
 					.build()
 			}
 			.retrieve()
@@ -53,7 +52,7 @@ class KakaoBookSearchApiService(
 			null
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): List<BookSearchApiResponse>? {
+	override fun searchBookListByTitle(title: String, page: Int): List<BookResponse>? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder

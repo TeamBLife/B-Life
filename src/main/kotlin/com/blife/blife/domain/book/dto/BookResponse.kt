@@ -1,8 +1,8 @@
-package com.blife.blife.domain.book.external.booksearchapi.dto
+package com.blife.blife.domain.book.dto
 
 import java.time.LocalDateTime
 
-data class BookSearchApiResponse(
+data class BookResponse(
 	val isbn10: Long?,
 	val isbn13: Long?,
 	val coverUrl: String,

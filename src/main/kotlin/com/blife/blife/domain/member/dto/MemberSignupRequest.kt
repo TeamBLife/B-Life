@@ -1,6 +1,5 @@
 package com.blife.blife.domain.member.dto
 
-import org.springframework.stereotype.Service
 
 data class MemberSignupRequest(
     val role: String,

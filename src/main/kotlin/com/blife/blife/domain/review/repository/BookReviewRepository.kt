@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface BookReviewRepository : JpaRepository<BookReview, Long> {
     fun findByBookId(bookId: Long, pageable: Pageable): Page<BookReview>
-    fun findByBookIdAndId(bookId: Long, id : Long) : BookReview
+    fun findAllByBookId(bookId: Long) : List<BookReview>
 }

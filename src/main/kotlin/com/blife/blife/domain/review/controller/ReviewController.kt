@@ -22,92 +22,111 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/review")
-class ReviewController (
-    private val reviewService : ReviewService
-){
+class ReviewController(
+    private val reviewService: ReviewService,
+) {
     @Operation(summary = "책 리뷰 조회")
-    @GetMapping("/{bookId}")
+    @GetMapping("/book/{bookId}")
+    fun getBookReviewList(
+        @PathVariable bookId: Long,
+        @PageableDefault pageable: Pageable,
+    ): ResponseEntity<Page<BookReviewResponse>> {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewListByBookId(bookId, pageable))
+    }
+
+    @Operation(summary = "책 단일리뷰 조회")
+    @GetMapping("/book/{bookReviewId}")
     fun getBookReview(
-        @PathVariable bookId : Long,
-        @PageableDefault pageable: Pageable
-    ): ResponseEntity<Page<BookReviewResponse>>
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewByBookId(bookId, pageable))
+        @PathVariable bookReviewId: Long,
+    ): ResponseEntity<BookReviewResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewByBookId(bookReviewId))
     }
+
+
     @Operation(summary = "도서관내 책 리뷰 조회")
-    @GetMapping("/{libBookId}")
-    fun getBookReviewInLib(
+    @GetMapping("/libBook/{libBookId}")
+    fun getBookReviewListInLib(
         @PathVariable libBookId: Long,
-        @PageableDefault pageable: Pageable
-    ): ResponseEntity<Page<LibBookReviewResponse>>
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewByLibBookId(libBookId, pageable))
+        @PageableDefault pageable: Pageable,
+    ): ResponseEntity<Page<LibBookReviewResponse>> {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewListByLibBookId(libBookId, pageable))
     }
+
+    @Operation(summary = "책 단일리뷰 조회")
+    @GetMapping("/libBook/{libBookReviewId}")
+    fun getBookReviewInLib(
+        @PathVariable libBookReviewId: Long,
+    ): ResponseEntity<LibBookReviewResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getBookReviewInLib(libBookReviewId))
+    }
+
     @Operation(summary = "책 리뷰 생성")
-    @PostMapping("/{bookId}")
+    @PostMapping("/book/{bookId}")
     fun createBookReview(
         @PathVariable bookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        bookReviewRequest: BookReviewRequest
-    ) : ResponseEntity<BookReviewResponse>{
+        bookReviewRequest: BookReviewRequest,
+    ): ResponseEntity<BookReviewResponse> {
         val userId = userPrincipal.id
-        reviewService.createBookReview(bookId,userId, bookReviewRequest,)
+        reviewService.createBookReview(bookId, userId, bookReviewRequest)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
+
     @Operation(summary = "도서관내 책 리뷰 생성")
-    @PostMapping("/{libraryId}/{libBookId}")
+    @PostMapping("/libBook/{libBookId}")
     fun createBookReviewInLib(
         @PathVariable libBookId: Long,
-        @PathVariable libraryId : Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        libBookReviewRequest: LibBookReviewRequest
-    ): ResponseEntity<LibBookReviewResponse>{
+        libBookReviewRequest: LibBookReviewRequest,
+    ): ResponseEntity<LibBookReviewResponse> {
         val userId = userPrincipal.id
-        reviewService.createBookReviewInLib(bookId,  libraryId, libBookReviewRequest)
+        reviewService.createBookReviewInLib(libBookId, userId, libBookReviewRequest)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
+
     @Operation(summary = "책 리뷰 수정")
-    @PatchMapping("{bookId}/{bookReviewId}")
+    @PatchMapping("/book/{bookReviewId}")
     fun updateBookReview(
-        @PathVariable bookId : Long,
         @PathVariable bookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         bookReviewRequest: BookReviewRequest,
-    ) : ResponseEntity<BookReviewResponse>{
+    ): ResponseEntity<BookReviewResponse> {
         val userId = userPrincipal.id
-        reviewService.updateBookReview(bookId, bookReviewId, bookReviewRequest)
+        reviewService.updateBookReview(bookReviewId, userId, bookReviewRequest)
         return ResponseEntity.status(HttpStatus.OK).build()
     }
+
     @Operation(summary = "도서관내 책 리뷰 수정")
-    @PatchMapping("/{libBookId}/{libBookReviewId}")
+    @PatchMapping("/libBook/{libBookReviewId}")
     fun updateBookReviewInLib(
-        @PathVariable libBookId : Long,
         @PathVariable libBookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        libBookReviewRequest: LibBookReviewRequest
-    ): ResponseEntity<LibBookReviewResponse>{
+        libBookReviewRequest: LibBookReviewRequest,
+    ): ResponseEntity<LibBookReviewResponse> {
         val userId = userPrincipal.id
-        reviewService.updateBookReviewInLib(libBookId,libBookReviewId, libBookReviewRequest)
+        reviewService.updateBookReviewInLib(libBookReviewId, userId, libBookReviewRequest)
         return ResponseEntity.status(HttpStatus.OK).build()
     }
+
     @Operation(summary = "책 리뷰 삭제")
-    @DeleteMapping("/{bookReviewId}")
+    @DeleteMapping("/book/{bookReviewId}")
     fun deleteReview(
         @PathVariable bookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): ResponseEntity<Unit>{
+    ): ResponseEntity<Unit> {
         val userId = userPrincipal.id
-        reviewService.deleteReview(bookReviewId)
+        reviewService.deleteReview(bookReviewId, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
+
     @Operation(summary = "도서관 내 책 리뷰 삭제")
-    @DeleteMapping("/libBookReviewId}")
+    @DeleteMapping("/libBook/{libBookReviewId}")
     fun deleteLibBookReview(
         @PathVariable libBookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): ResponseEntity<Unit>{
+    ): ResponseEntity<Unit> {
         val userId = userPrincipal.id
-        reviewService.deleteLibBookReview(libBookReviewId)
+        reviewService.deleteLibBookReview(libBookReviewId, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

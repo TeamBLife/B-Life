@@ -1,6 +1,6 @@
 package com.blife.blife.domain.member.service
 
-import com.blife.blife.domain.member.dto.LoginResponse
+import com.blife.blife.domain.member.dto.MemberLoginResponse
 import com.blife.blife.domain.member.dto.MemberLoginRequest
 import com.blife.blife.domain.member.dto.MemberRespose
 import com.blife.blife.domain.member.dto.MemberSignupRequest
@@ -33,14 +33,14 @@ class MemberService (
         ).let { MemberRespose(it.role, it.name, it.email) }
     }
 
-    fun login(request: MemberLoginRequest): LoginResponse {
+    fun login(request: MemberLoginRequest): MemberLoginResponse {
         val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
 
         if(user.role.name != request.role || !passwordEncoder.matches(request.password, user.password )) {
             throw InvalidCredentialException("Email is already in use")
         }
 
-        return LoginResponse(
+        return MemberLoginResponse(
             accessToken = jwtPlugin.generateAccessToken(
                 subject = user.id.toString(),
                 email = user.email,

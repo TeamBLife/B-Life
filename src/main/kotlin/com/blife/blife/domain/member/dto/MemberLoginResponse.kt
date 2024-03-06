@@ -1,5 +1,5 @@
 package com.blife.blife.domain.member.dto
 
-data class LoginResponse(
+data class MemberLoginResponse(
     val accessToken: String,
 )

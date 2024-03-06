@@ -1,10 +1,11 @@
 package com.blife.blife.domain.member.controller
 
-import com.blife.blife.domain.member.dto.LoginResponse
+import com.blife.blife.domain.member.dto.MemberLoginResponse
 import com.blife.blife.domain.member.dto.MemberLoginRequest
 import com.blife.blife.domain.member.dto.MemberRespose
 import com.blife.blife.domain.member.dto.MemberSignupRequest
 import com.blife.blife.domain.member.service.MemberService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,16 +19,20 @@ class MemberController (
     private val memberService: MemberService
 ){
     @PostMapping("/signup")
-    fun signup(@RequestBody signupRequest: MemberSignupRequest): ResponseEntity<MemberRespose>{
+    fun signup(@RequestBody @Valid signupRequest: MemberSignupRequest): ResponseEntity<MemberRespose>{
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(memberService.signup(signupRequest))
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody loginRequest: MemberLoginRequest): ResponseEntity<LoginResponse>{
+    fun login(@RequestBody loginRequest: MemberLoginRequest): ResponseEntity<MemberLoginResponse>{
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(memberService.login(loginRequest))
+    }
+
+    fun signout(){
+
     }
 }

@@ -30,6 +30,7 @@ class ReviewService(
 
         return reviewPage.map { review ->
             BookReviewResponse(
+                id = review.id!!,
                 name = review.member.name,
                 point = review.point,
                 comment = review.comment
@@ -50,6 +51,7 @@ class ReviewService(
 
         return reviewPage.map { review ->
             LibBookReviewResponse(
+                id = review.id!!,
                 name = review.member.name,
                 point = review.point,
                 comment = review.comment,

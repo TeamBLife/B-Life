@@ -1,6 +1,7 @@
 package com.blife.blife.domain.review.dto
 
 data class BookReviewResponse(
+    val id : Long,
     val name : String,
     val point : Float,
     val comment : String

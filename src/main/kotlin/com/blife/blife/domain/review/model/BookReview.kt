@@ -27,6 +27,7 @@ class BookReview (
 }
 fun BookReview.toResponse(): BookReviewResponse {
     return BookReviewResponse(
+        id = id!!,
         name = member.name,
         point = point,
         comment = comment

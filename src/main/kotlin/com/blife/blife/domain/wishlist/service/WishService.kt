@@ -17,5 +17,7 @@ class WishService (
     fun createWishList(userId: Long, libBookIdId: Long) : WishListResponse {
         val book = libBookRepository.findByIdOrNull(libBookIdId) ?: throw IllegalArgumentException("book in library")
         val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
+
+
     }
 }

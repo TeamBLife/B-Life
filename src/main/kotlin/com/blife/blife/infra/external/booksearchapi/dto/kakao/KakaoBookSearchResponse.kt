@@ -1,4 +1,4 @@
-package com.blife.blife.domain.book.external.booksearchapi.kakao.dto
+package com.blife.blife.infra.external.booksearchapi.dto.kakao
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming

@@ -1,8 +1,7 @@
-package com.blife.blife.domain.book.external.booksearchapi.naver
+package com.blife.blife.infra.external.booksearchapi
 
 import com.blife.blife.domain.book.dto.BookResponse
-import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
-import com.blife.blife.domain.book.external.booksearchapi.naver.dto.NaverBookSearchResponse
+import com.blife.blife.infra.external.booksearchapi.dto.naver.NaverBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
@@ -11,12 +10,14 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 
 @Component
-class NaverBookSearchApiService(
+class NaverBookSearchClient(
 	@Value("\${Naver_Client_Id}")
 	private val clientId: String,
 	@Value("\${Naver_Client_Secret}")
 	private val clientSecret: String,
-) : IBookSearchApi {
+) : IBookSearchClient {
+
+	override fun getClintName() = "NAVER"
 
 	companion object {
 		private const val BASE_URL = "https://openapi.naver.com/v1/search/book_adv.json"
@@ -27,10 +28,10 @@ class NaverBookSearchApiService(
 		.defaultHeader("X-Naver-Client-Id", clientId)
 		.defaultHeader("X-Naver-Client-Secret", clientSecret)
 		.defaultStatusHandler(HttpStatusCode::is4xxClientError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.defaultStatusHandler(HttpStatusCode::is5xxServerError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.build()
 

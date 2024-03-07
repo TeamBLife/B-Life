@@ -1,8 +1,7 @@
-package com.blife.blife.domain.book.external.booksearchapi.kakao
+package com.blife.blife.infra.external.booksearchapi
 
 import com.blife.blife.domain.book.dto.BookResponse
-import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
-import com.blife.blife.domain.book.external.booksearchapi.kakao.dto.KakaoBookSearchResponse
+import com.blife.blife.infra.external.booksearchapi.dto.kakao.KakaoBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
@@ -11,11 +10,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 
 @Component
-class KakaoBookSearchApiService(
+class KakaoBookSearchClient(
 	@Value("\${external.kakao.restApiKey}")
 	private val restApiKey: String,
-) : IBookSearchApi {
+) : IBookSearchClient {
 
+	override fun getClintName() = "KAKAO"
 
 	companion object {
 		private const val BASE_URL = "https://dapi.kakao.com/v3/search/book"
@@ -25,10 +25,10 @@ class KakaoBookSearchApiService(
 		.baseUrl(BASE_URL)
 		.defaultHeader("Authorization", "KakaoAK $restApiKey")
 		.defaultStatusHandler(HttpStatusCode::is4xxClientError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.defaultStatusHandler(HttpStatusCode::is5xxServerError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.build()
 

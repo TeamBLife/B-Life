@@ -1,4 +1,4 @@
-package com.blife.blife.domain.book.external.libapi.data4library.dto.popular
+package com.blife.blife.infra.external.libapi.dto.popular
 
 data class Data4libBookPopularResponseDoc(
 	val no: Int,

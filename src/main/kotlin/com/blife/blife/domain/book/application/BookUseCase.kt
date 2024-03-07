@@ -1,15 +1,19 @@
 package com.blife.blife.domain.book.application
 
 import com.blife.blife.domain.book.dto.BookResponse
-import com.blife.blife.domain.book.external.booksearchapi.IBookSearchApi
 import com.blife.blife.domain.book.service.BookService
+import com.blife.blife.infra.external.booksearchapi.IBookSearchClient
 import org.springframework.stereotype.Service
 
 @Service
-class BookApiService(
-	private val bookSearchApiList: List<IBookSearchApi>,
+class BookUseCase(
+	private val bookSearchClients: List<IBookSearchClient>,
 	private val bookService: BookService
 ) {
+
+	private fun ifClientIsKakaoThenSaveBook(client: IBookSearchClient, result: BookResponse) {
+		if (client.getClintName() == "KAKAO") bookService.addBook(result)
+	}
 
 	/**
 	 * NOTE: 실행 순서
@@ -25,12 +29,12 @@ class BookApiService(
 	fun searchDetailBookInfo(isbn: Long): BookResponse {
 		var result: BookResponse? = bookService.getBookByIsbn(isbn)
 
-		result ?: run loop@{
-			bookSearchApiList.forEachIndexed { index, api ->
-				result = api.searchBookDetailInfo(isbn)
+		if (result == null) {
+			for (client in bookSearchClients) {
+				result = client.searchBookDetailInfo(isbn)
 				if (result != null) {
-					if (index == 0) bookService.addBook(result!!)
-					return@loop
+					ifClientIsKakaoThenSaveBook(client, result)
+					break
 				}
 			}
 		}
@@ -38,18 +42,17 @@ class BookApiService(
 		return result.takeIf { it != null } ?: throw TODO("데이터가 존재하지 않음")
 	}
 
+
 	fun searchBookListByTitle(title: String, page: Int): List<BookResponse> {
 		var result: List<BookResponse>? = null
 
-		run loop@{
-			bookSearchApiList.forEach {
-				result = it.searchBookListByTitle(title, page)
-				if (result != null) return@loop
-			}
+		for (client in bookSearchClients) {
+			result = client.searchBookListByTitle(title, page)
+			if (result != null) break
 		}
 
-		result ?: run { result = bookService.searchBookListByTitle(title, page) }
+		if (result == null) result = bookService.searchBookListByTitle(title, page)
 
-		return result.takeIf { it!!.isNotEmpty() } ?: throw TODO("데이터가 존재하지 않음")
+		return result.takeIf { it.isNotEmpty() } ?: throw TODO("데이터가 존재하지 않음")
 	}
 }

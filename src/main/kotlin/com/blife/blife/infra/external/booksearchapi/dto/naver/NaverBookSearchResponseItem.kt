@@ -1,4 +1,4 @@
-package com.blife.blife.domain.book.external.booksearchapi.naver.dto
+package com.blife.blife.infra.external.booksearchapi.dto.naver
 
 import com.blife.blife.domain.book.dto.BookResponse
 import com.fasterxml.jackson.databind.PropertyNamingStrategies

@@ -1,6 +1,8 @@
 package com.blife.blife.global.security
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jws
+import io.jsonwebtoken.Jwt
 import org.springframework.stereotype.Component
 import io.jsonwebtoken.security.Keys
 import java.nio.charset.StandardCharsets
@@ -17,10 +19,7 @@ class JwtPlugin (
     @Value("\${auth.jwt.accessTokenExpirationHour}") private val accessTokenExpirationHour: Long,
 ){
 
-    companion object {
-
-    }
-    fun validateToken(jwt: String): Result<*> {
+    fun validateToken(jwt: String): Result<Jws<Claims>> {
         return kotlin.runCatching {
             val key = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 

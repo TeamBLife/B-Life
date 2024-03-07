@@ -1,6 +1,5 @@
 package com.blife.blife.domain.review.controller
 
-import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.BookReviewRequest
 import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.service.BookReviewService

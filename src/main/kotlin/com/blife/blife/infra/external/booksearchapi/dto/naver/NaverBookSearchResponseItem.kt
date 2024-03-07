@@ -1,6 +1,6 @@
 package com.blife.blife.infra.external.booksearchapi.dto.naver
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.LocalDate
@@ -19,7 +19,7 @@ data class NaverBookSearchResponseItem(
 	val isbn: String,
 	val description: String,
 ) {
-	fun convertToBookSearchResponse() = BookResponse(
+	fun convertToBook() = Book(
 		isbn13 = isbn.toLong(),
 		title = title,
 		description = description,

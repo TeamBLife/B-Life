@@ -1,6 +1,6 @@
 package com.blife.blife.infra.external.booksearchapi.dto.kakao
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
@@ -22,7 +22,7 @@ data class KakaoBookSearchResponseDocument(
 	val status: String
 ) {
 
-	fun convertToBookSearchResponse() = BookResponse(
+	fun convertToBook() = Book(
 		title = title,
 		description = contents,
 		author = authors.joinToString(","),

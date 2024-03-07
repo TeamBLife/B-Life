@@ -1,6 +1,6 @@
 package com.blife.blife.domain.book.application
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.book.service.BookService
 import com.blife.blife.infra.external.booksearchapi.IBookSearchClient
 import org.springframework.stereotype.Service
@@ -11,7 +11,7 @@ class BookUseCase(
 	private val bookService: BookService
 ) {
 
-	private fun ifClientIsKakaoThenSaveBook(client: IBookSearchClient, result: BookResponse) {
+	private fun ifClientIsKakaoThenSaveBook(client: IBookSearchClient, result: Book) {
 		if (client.getClintName() == "KAKAO") bookService.addBook(result)
 	}
 
@@ -26,8 +26,8 @@ class BookUseCase(
 	 *  2. 데이터가 DB에 없다면 bookSearchApiService에서 DetailBookInfo를 가져온다.
 	 *  3. 있다면 DB에 저장시키고 유저에게 다시 반환 시킨다.
 	 */
-	fun searchDetailBookInfo(isbn: Long): BookResponse {
-		var result: BookResponse? = bookService.getBookByIsbn(isbn)
+	fun searchDetailBookInfo(isbn: Long): Book {
+		var result: Book? = bookService.getBookByIsbn(isbn)?.let { 1 as Book }
 
 		if (result == null) {
 			for (client in bookSearchClients) {
@@ -42,16 +42,15 @@ class BookUseCase(
 		return result.takeIf { it != null } ?: throw TODO("데이터가 존재하지 않음")
 	}
 
-
-	fun searchBookListByTitle(title: String, page: Int): List<BookResponse> {
-		var result: List<BookResponse>? = null
+	fun searchBookListByTitle(title: String, page: Int): List<Book> {
+		var result: List<Book>? = null
 
 		for (client in bookSearchClients) {
 			result = client.searchBookListByTitle(title, page)
 			if (result != null) break
 		}
 
-		if (result == null) result = bookService.searchBookListByTitle(title, page)
+		if (result == null) result = bookService.searchBookListByTitle(title, page).map { 1 as Book }
 
 		return result.takeIf { it.isNotEmpty() } ?: throw TODO("데이터가 존재하지 않음")
 	}

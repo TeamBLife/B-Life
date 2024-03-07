@@ -1,4 +1,4 @@
-package com.blife.blife.domain.book.external.booksearchapi.kakao.dto
+package com.blife.blife.infra.external.booksearchapi.dto.kakao
 
 import com.blife.blife.domain.book.dto.BookResponse
 import com.fasterxml.jackson.annotation.JsonFormat

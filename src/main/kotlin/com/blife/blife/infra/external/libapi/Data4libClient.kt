@@ -1,13 +1,13 @@
-package com.blife.blife.domain.book.external.libapi.data4library
+package com.blife.blife.infra.external.libapi
 
-import com.blife.blife.domain.book.external.libapi.data4library.dto.popular.Data4libBookPopularResponse
+import com.blife.blife.infra.external.libapi.dto.popular.Data4libBookPopularResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatusCode
 import org.springframework.web.client.RestClient
 
-class Data4libApiService(
+class Data4libClient(
 	@Value("\${Data4Lib_Secret_Key}")
 	private val secretKey: String,
 ) {
@@ -15,10 +15,10 @@ class Data4libApiService(
 	private val restClient = RestClient.builder()
 		.baseUrl("http://data4library.kr/api")
 		.defaultStatusHandler(HttpStatusCode::is4xxClientError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.defaultStatusHandler(HttpStatusCode::is5xxServerError) { _, response ->
-			val resObject = JSONValue.parse(response.body.reader()) as JSONObject
+			JSONValue.parse(response.body.reader()) as JSONObject
 		}
 		.build()
 

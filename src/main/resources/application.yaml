@@ -1,0 +1,8 @@
+external:
+  data4library:
+    secretKey: ${Data4Lib_Secret_Key}
+  kakao:
+    restApiKey: ${Kakao_RestApi_Key}
+  naver:
+    clientId: ${Naver_Client_Id}
+    clientSecret: ${Naver_Client_Secret}

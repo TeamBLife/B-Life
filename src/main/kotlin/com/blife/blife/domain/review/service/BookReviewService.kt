@@ -41,7 +41,7 @@ class BookReviewService (
     @Transactional
     fun createBookReview(bookId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
         val book = bookRepository.findByIdOrNull(bookId)?: throw IllegalArgumentException("book")
-        val member = memberRepository.findById(userId).orElseThrow { NoSuchElementException("Member not found") }
+        val member = memberRepository.findByIdOrNull(userId)?: throw IllegalArgumentException("member")
         val createdReview = bookReviewRepository.save(
             BookReview(
                 book = book,

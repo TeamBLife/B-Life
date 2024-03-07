@@ -27,7 +27,7 @@ class BookUseCase(
 	 *  3. 있다면 DB에 저장시키고 유저에게 다시 반환 시킨다.
 	 */
 	fun searchDetailBookInfo(isbn: Long): Book {
-		var result: Book? = bookService.getBookByIsbn(isbn)?.let { 1 as Book }
+		var result: Book? = bookService.getBookByIsbn(isbn)
 
 		if (result == null) {
 			for (client in bookSearchClients) {
@@ -50,7 +50,7 @@ class BookUseCase(
 			if (result != null) break
 		}
 
-		if (result == null) result = bookService.searchBookListByTitle(title, page).map { 1 as Book }
+		if (result == null) result = bookService.searchBookListByTitle(title, page)
 
 		return result.takeIf { it.isNotEmpty() } ?: throw TODO("데이터가 존재하지 않음")
 	}

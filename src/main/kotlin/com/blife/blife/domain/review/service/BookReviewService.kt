@@ -8,6 +8,7 @@ import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.model.BookReview
 import com.blife.blife.domain.review.model.toResponse
 import com.blife.blife.domain.review.repository.BookReviewRepository
+import jakarta.persistence.Cacheable
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -15,7 +16,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class BookReviewService (
+class BookReviewService(
     private val bookReviewRepository: BookReviewRepository,
     private val memberRepository: MemberRepository,
     private val bookRepository: BookRepository,
@@ -33,29 +34,30 @@ class BookReviewService (
         }
     }
 
-    fun getAverage(bookId : Long): AverageScoreDto{
-        val reviews  = bookReviewRepository.findAllByBookId(bookId)
-        if(reviews.isEmpty()) {
+
+    fun getAverage(bookId: Long): AverageScoreDto {
+        val reviews = bookReviewRepository.findAllByBookId(bookId)
+        if (reviews.isEmpty()) {
             throw IllegalArgumentException("No reviews found for book with ID: $bookId")
         }
 
-        val averageScore = reviews.map{it.point}.average()
+        val averageScore = reviews.map { it.point }.average()
 
         return AverageScoreDto(averageScore)
     }
+
     fun getReviewByBookId(bookReviewId: Long): BookReviewResponse {
         val review =
-            bookReviewRepository.findByIdOrNull(bookReviewId)?: throw IllegalArgumentException("review")
+            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw IllegalArgumentException("review")
 
         return review.toResponse()
     }
 
-
     @Transactional
     fun createBookReview(bookId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
-        val book = bookRepository.findByIdOrNull(bookId)?: throw IllegalArgumentException("book")
-        val member = memberRepository.findByIdOrNull(userId)?: throw IllegalArgumentException("member")
-        if (request.point < 1 || request.point >10){
+        val book = bookRepository.findByIdOrNull(bookId) ?: throw IllegalArgumentException("book")
+        val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
+        if (request.point < 1 || request.point > 10) {
             throw IllegalArgumentException("point must be 1 ~ 10")
         }
         val createdReview = bookReviewRepository.save(
@@ -73,11 +75,11 @@ class BookReviewService (
     @Transactional
     fun updateBookReview(bookReviewId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
         val review =
-            bookReviewRepository.findByIdOrNull(bookReviewId)?: throw IllegalArgumentException("review")
+            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw IllegalArgumentException("review")
         if (review.member.id != userId) {
             throw TODO("no authority")
         }
-        if (request.point < 1 || request.point >10){
+        if (request.point < 1 || request.point > 10) {
             throw IllegalArgumentException("point must be 1 ~ 10")
         }
         review.point = request.point
@@ -85,6 +87,7 @@ class BookReviewService (
         val updateReview = bookReviewRepository.save(review)
         return updateReview.toResponse()
     }
+
     fun deleteReview(bookReviewId: Long, userId: Long) {
         val review = bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("no data error")
         if (review.member.id != userId) {

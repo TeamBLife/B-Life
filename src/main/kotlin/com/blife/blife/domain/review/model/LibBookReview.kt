@@ -10,7 +10,7 @@ import jakarta.persistence.*
 (name = "libBookReview")
 class LibBookReview (
     @ManyToOne
-    @Column(name = "libBook_id")
+    @JoinColumn(name = "libBook_id")
     var libBook: LibBook,
 
     @Column(name = "point")
@@ -20,7 +20,7 @@ class LibBookReview (
     var comment : String,
 
     @ManyToOne
-    @Column(name = "member_id")
+    @JoinColumn(name = "member_id")
     val member : Member,
 
     @Column(name = "status")

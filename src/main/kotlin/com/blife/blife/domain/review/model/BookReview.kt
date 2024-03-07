@@ -8,7 +8,7 @@ import jakarta.persistence.*
 @Entity(name = "bookReview")
 class BookReview (
     @ManyToOne
-    @Column(name = "book_id")
+    @JoinColumn(name = "book_id")
     var book: Book,
 
     @Column(name = "point")
@@ -18,7 +18,7 @@ class BookReview (
     var comment : String,
 
     @ManyToOne
-    @Column(name = "member_id")
+    @JoinColumn(name = "member_id")
     val member : Member,
 ){
     @Id

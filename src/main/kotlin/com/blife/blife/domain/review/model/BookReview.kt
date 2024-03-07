@@ -2,19 +2,19 @@ package com.blife.blife.domain.review.model
 
 import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.member.model.Member
+import com.blife.blife.domain.review.dto.BookReviewResponse
 import jakarta.persistence.*
 
-@Entity
-(name = "review")
-class Review (
+@Entity(name = "bookReview")
+class BookReview (
     @ManyToOne
     @Column(name = "book_id")
-    val book : Book,
+    var book: Book,
 
-    val status : String,
+    @Column(name = "point")
+    var point : Float,
 
-    val point : Float,
-
+    @Column(name = "comment")
     var comment : String,
 
     @ManyToOne
@@ -24,4 +24,12 @@ class Review (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+}
+fun BookReview.toResponse(): BookReviewResponse {
+    return BookReviewResponse(
+        id = id!!,
+        name = member.name,
+        point = point,
+        comment = comment
+    )
 }

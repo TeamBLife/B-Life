@@ -1,6 +1,10 @@
 package com.blife.blife.domain.member.service
 
-import com.blife.blife.domain.member.dto.*
+import com.blife.blife.domain.member.dto.request.MemberLoginRequest
+import com.blife.blife.domain.member.dto.request.MemberOwnerSignupRequest
+import com.blife.blife.domain.member.dto.request.MemberSignupRequest
+import com.blife.blife.domain.member.dto.response.MemberLoginResponse
+import com.blife.blife.domain.member.dto.response.MemberResponse
 import com.blife.blife.domain.member.enums.MemberRole
 import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.member.repository.MemberRepository
@@ -8,8 +12,10 @@ import com.blife.blife.global.exception.InvalidCredentialException
 import com.blife.blife.global.security.JwtPlugin
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class MemberService (
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,

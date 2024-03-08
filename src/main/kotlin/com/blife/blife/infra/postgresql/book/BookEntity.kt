@@ -1,6 +1,8 @@
 package com.blife.blife.infra.postgresql.book
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import java.time.LocalDateTime
 
 @Entity
@@ -10,14 +12,10 @@ data class BookEntity(
 
 	@Column(unique = true)
 	val isbn10: Long?,
-	@Column(unique = true)
+	@Id @Column(unique = true)
 	val isbn13: Long?,
 
 	val coverUrl: String,
 	val description: String,
 	val publicationDate: LocalDateTime, // 출판일자
-) {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long? = null
-}
+)

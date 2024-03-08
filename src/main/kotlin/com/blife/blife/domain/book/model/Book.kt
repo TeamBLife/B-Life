@@ -1,8 +1,8 @@
-package com.blife.blife.domain.book.dto
+package com.blife.blife.domain.book.model
 
 import java.time.LocalDateTime
 
-data class BookResponse(
+class Book(
 	val isbn10: Long?,
 	val isbn13: Long?,
 	val coverUrl: String,

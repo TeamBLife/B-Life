@@ -1,6 +1,6 @@
 package com.blife.blife.infra.external.booksearchapi
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
 import com.blife.blife.infra.external.booksearchapi.dto.kakao.KakaoBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
@@ -32,7 +32,7 @@ class KakaoBookSearchClient(
 		}
 		.build()
 
-	override fun searchBookDetailInfo(isbn13: Long): BookResponse? {
+	override fun searchBookDetailInfo(isbn13: Long): Book? {
 
 		val responseEntity = restClient.get()
 			.uri { builder ->
@@ -47,12 +47,12 @@ class KakaoBookSearchClient(
 		val resultData = responseEntity.body
 
 		return if (resultData != null && resultData.documents.isNotEmpty())
-			resultData.documents[0].convertToBookSearchResponse()
+			resultData.documents[0].convertToBook()
 		else
 			null
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): List<BookResponse>? {
+	override fun searchBookListByTitle(title: String, page: Int): List<Book>? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
@@ -67,7 +67,7 @@ class KakaoBookSearchClient(
 		val resultData = responseEntity.body
 
 		return if (resultData !== null && resultData.documents.isNotEmpty())
-			resultData.documents.map { it.convertToBookSearchResponse() }
+			resultData.documents.map { it.convertToBook() }
 		else
 			null
 	}

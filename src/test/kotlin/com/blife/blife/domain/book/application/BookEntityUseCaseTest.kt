@@ -1,9 +1,9 @@
 package com.blife.blife.domain.book.application
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
+import com.blife.blife.domain.book.service.BookService
 import com.blife.blife.infra.external.booksearchapi.KakaoBookSearchClient
 import com.blife.blife.infra.external.booksearchapi.NaverBookSearchClient
-import com.blife.blife.domain.book.service.BookService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringTestExtension
@@ -30,7 +30,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 
 	describe("searchDetailBookInfo") {
 		context("DB에 데이터가 있다면") {
-			every { bookService.getBookByIsbn(any()) } returns BookResponse(
+			every { bookService.getBookByIsbn(any()) } returns Book(
 				1,
 				1,
 				"image",
@@ -47,7 +47,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 		context("DB에 데이터가 없고 Kakao Api Service가 성공한다면") {
 			every { bookService.getBookByIsbn(any()) } returns null
 
-			val response = BookResponse(
+			val response = Book(
 				1,
 				1,
 				"image",
@@ -68,7 +68,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 		context("DB에 데이터가 없고 Kakao Api Service가 실패한다면") {
 			every { bookService.getBookByIsbn(any()) } returns null
 			every { kakaoClient.searchBookDetailInfo(any()) } returns null
-			every { naverClient.searchBookDetailInfo(any()) } returns BookResponse(
+			every { naverClient.searchBookDetailInfo(any()) } returns Book(
 				1,
 				1,
 				"image",
@@ -95,7 +95,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 	describe("searchBookListByTitle") {
 		context("요청을 하고 문제가 없을 경우") {
 			every { kakaoClient.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
-				BookResponse(
+				Book(
 					1,
 					1,
 					"image",
@@ -115,7 +115,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 		context("Kakao에서 에러가 날 경우") {
 			every { kakaoClient.searchBookListByTitle(any(), any()) } returns null
 			every { naverClient.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
-				BookResponse(
+				Book(
 					1,
 					1,
 					"image",
@@ -136,7 +136,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 			every { kakaoClient.searchBookListByTitle(any(), any()) } returns null
 			every { naverClient.searchBookListByTitle(any(), any()) } returns null
 			every { bookService.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
-				BookResponse(
+				Book(
 					1,
 					1,
 					"image",

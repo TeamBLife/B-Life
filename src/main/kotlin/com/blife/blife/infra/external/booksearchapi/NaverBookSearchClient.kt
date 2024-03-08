@@ -1,6 +1,6 @@
 package com.blife.blife.infra.external.booksearchapi
 
-import com.blife.blife.domain.book.dto.BookResponse
+import com.blife.blife.domain.book.model.Book
 import com.blife.blife.infra.external.booksearchapi.dto.naver.NaverBookSearchResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
@@ -35,7 +35,7 @@ class NaverBookSearchClient(
 		}
 		.build()
 
-	override fun searchBookDetailInfo(isbn13: Long): BookResponse? {
+	override fun searchBookDetailInfo(isbn13: Long): Book? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
@@ -48,12 +48,12 @@ class NaverBookSearchClient(
 		val resultData = responseEntity.body
 
 		return if (resultData != null && resultData.items.isNotEmpty())
-			resultData.items[0].convertToBookSearchResponse()
+			resultData.items[0].convertToBook()
 		else
 			null
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): List<BookResponse>? {
+	override fun searchBookListByTitle(title: String, page: Int): List<Book>? {
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
@@ -67,7 +67,7 @@ class NaverBookSearchClient(
 		val resultData = responseEntity.body
 
 		return if (resultData !== null && resultData.items.isNotEmpty())
-			resultData.items.map { it.convertToBookSearchResponse() }
+			resultData.items.map { it.convertToBook() }
 		else
 			null
 	}

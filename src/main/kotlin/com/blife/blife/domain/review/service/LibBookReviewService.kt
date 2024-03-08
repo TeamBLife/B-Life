@@ -1,6 +1,6 @@
 package com.blife.blife.domain.review.service
 
-import com.blife.blife.domain.book.repository.LibBookRepository
+import com.blife.blife.domain.book.model.LibBook
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.LibBookReviewRequest
@@ -10,8 +10,13 @@ import com.blife.blife.domain.review.repository.LibBookReviewRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+
+interface LibBookRepository : JpaRepository<LibBook, Long> {
+    fun findByBookIdAndLibId(bookId : Long, libraryId : Long) : LibBook?
+}
 
 @Service
 class LibBookReviewService(

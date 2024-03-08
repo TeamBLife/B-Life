@@ -1,8 +1,10 @@
 package com.blife.blife.domain.review.controller
 
+import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.BookReviewRequest
 import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.service.BookReviewService
+import com.blife.blife.global.security.UserPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -13,12 +15,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/review/book")
+@RequestMapping("/bookreviews")
 class BookReviewController (
     private val bookReviewService: BookReviewService,
 ){
     @Operation(summary = "책 리뷰 조회")
-    @GetMapping("/{bookId}")
+    @GetMapping("/books/{bookId}")
     fun getBookReviewList(
         @PathVariable bookId: Long,
         @PageableDefault pageable: Pageable,
@@ -27,7 +29,7 @@ class BookReviewController (
     }
 
     @Operation(summary = "책 평점")
-    @GetMapping("/{bookId}/point")
+    @GetMapping("/books/{bookId}/point")
     fun getAverage(
         @PathVariable bookId: Long,
     ): ResponseEntity<AverageScoreDto>{
@@ -35,7 +37,7 @@ class BookReviewController (
     }
 
     @Operation(summary = "책 단일리뷰 조회")
-    @GetMapping("/{bookReviewId}")
+    @GetMapping("/books/{bookReviewId}")
     fun getBookReview(
         @PathVariable bookReviewId: Long,
     ): ResponseEntity<BookReviewResponse> {
@@ -43,7 +45,7 @@ class BookReviewController (
     }
 
     @Operation(summary = "책 리뷰 생성")
-    @PostMapping("/book/{bookId}")
+    @PostMapping("/books/{bookId}")
     fun createBookReview(
         @PathVariable bookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
@@ -56,7 +58,7 @@ class BookReviewController (
 
 
     @Operation(summary = "책 리뷰 수정")
-    @PatchMapping("/book/{bookReviewId}")
+    @PatchMapping("/{bookReviewId}")
     fun updateBookReview(
         @PathVariable bookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
@@ -69,7 +71,7 @@ class BookReviewController (
 
 
     @Operation(summary = "책 리뷰 삭제")
-    @DeleteMapping("/book/{bookReviewId}")
+    @DeleteMapping("/{bookReviewId}")
     fun deleteReview(
         @PathVariable bookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,

@@ -4,6 +4,7 @@ import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.LibBookReviewRequest
 import com.blife.blife.domain.review.dto.LibBookReviewResponse
 import com.blife.blife.domain.review.service.LibBookReviewService
+import com.blife.blife.global.security.UserPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -20,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/review/libBook")
+@RequestMapping("/libbookreviews")
 class LibBookReviewController(
     private val libBookReviewService: LibBookReviewService,
 ) {
 
     @Operation(summary = "도서관내 책 리뷰 조회")
-    @GetMapping("/{libBookId}")
+    @GetMapping("/libbooks/{libBookId}")
     fun getBookReviewListInLib(
         @PathVariable libBookId: Long,
         @PageableDefault pageable: Pageable,
@@ -35,7 +36,7 @@ class LibBookReviewController(
     }
 
     @Operation(summary = "책 평점")
-    @GetMapping("/{libBookReviewId}/point")
+    @GetMapping("/libbooks/{libBookReviewId}/point")
     fun getAverage(
         @PathVariable libBookReviewId: Long,
     ): ResponseEntity<AverageScoreDto>{
@@ -44,7 +45,7 @@ class LibBookReviewController(
 
 
     @Operation(summary = "책 단일리뷰 조회")
-    @GetMapping("/{libBookReviewId}")
+    @GetMapping("/libbooks/{libBookReviewId}")
     fun getBookReviewInLib(
         @PathVariable libBookReviewId: Long,
     ): ResponseEntity<LibBookReviewResponse> {
@@ -53,7 +54,7 @@ class LibBookReviewController(
 
 
     @Operation(summary = "도서관내 책 리뷰 생성")
-    @PostMapping("/{libBookId}")
+    @PostMapping("/libbooks/{libBookId}")
     fun createBookReviewInLib(
         @PathVariable libBookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,

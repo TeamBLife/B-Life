@@ -1,6 +1,6 @@
 package com.blife.blife.domain.review.service
 
-import com.blife.blife.domain.book.repository.BookRepository
+import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.BookReviewRequest
@@ -8,12 +8,17 @@ import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.model.BookReview
 import com.blife.blife.domain.review.model.toResponse
 import com.blife.blife.domain.review.repository.BookReviewRepository
-import jakarta.persistence.Cacheable
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+
+interface BookRepository : JpaRepository<Book, Long> {
+
+}
+
 
 @Service
 class BookReviewService(

@@ -1,6 +1,7 @@
 package com.blife.blife.domain.book.model
 
 import com.blife.blife.domain.library.model.Library
+import com.blife.blife.infra.postgresql.book.BookEntity
 import jakarta.persistence.*
 
 @Entity
@@ -11,7 +12,7 @@ class LibBook(
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Column(name = "book_id")
-	val book: Book,
+	val book: BookEntity,
 
 	val loanAvailable: Boolean
 ) {

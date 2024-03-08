@@ -1,4 +1,4 @@
-package com.blife.blife.domain.member.dto
+package com.blife.blife.domain.member.dto.request
 
 data class MemberLoginRequest (
     val email: String,

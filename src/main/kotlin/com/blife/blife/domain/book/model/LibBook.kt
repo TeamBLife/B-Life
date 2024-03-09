@@ -6,17 +6,24 @@ import jakarta.persistence.*
 
 @Entity
 class LibBook(
-	@ManyToOne(fetch = FetchType.LAZY)
-	@Column(name = "lib_id")
-	val lib: Library,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lib_id")
+    val lib: Library,
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@Column(name = "book_id")
-	val book: BookEntity,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    val book: BookEntity,
 
-	val loanAvailable: Boolean
+    @Column(name = "copy_count")
+    var copyCount: Short,
+
+    @Column(name = "Checkout_Count")
+    var checkoutCount: Short,
+
+    var loanAvailable: Boolean
+
 ) {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long? = null
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null
 }

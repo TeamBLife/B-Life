@@ -1,5 +1,7 @@
 package com.blife.blife.domain.book.model
 
+import com.blife.blife.domain.checkoutbook.dto.LibBookStatusResponse
+import com.blife.blife.domain.checkoutbook.dto.ReturnBookResponse
 import com.blife.blife.domain.library.model.Library
 import com.blife.blife.infra.postgresql.book.BookEntity
 import jakarta.persistence.*
@@ -26,4 +28,13 @@ class LibBook(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+}
+
+fun LibBook.toResponse(): LibBookStatusResponse {
+    return LibBookStatusResponse(
+        libBook = id!!,
+        copyCount = copyCount,
+        checkoutCount = checkoutCount,
+        loanAvailable = loanAvailable
+    )
 }

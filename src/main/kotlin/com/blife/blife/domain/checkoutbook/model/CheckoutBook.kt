@@ -16,7 +16,7 @@ class CheckoutBook(
     @JoinColumn(name = "member_id")
     val member: Member,
 
-    @Column(name = "isReturned")
+    @Column(name = "returned")
     var returned : Boolean,
 
     @Column(name = "checkout_time" , updatable = false)
@@ -35,6 +35,6 @@ class CheckoutBook(
 
     @PrePersist
     fun onPrePersist() {
-        checkoutTime = LocalDateTime.now()  // 영속화되기 전 현재 시간으로 설정
+        checkoutTime = LocalDateTime.now()
     }
 }

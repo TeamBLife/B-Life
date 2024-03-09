@@ -1,10 +1,8 @@
 package com.blife.blife.domain.checkoutbook.service
 
+import com.blife.blife.domain.book.model.toResponse
 import com.blife.blife.domain.book.repository.LibraryRepository
-import com.blife.blife.domain.checkoutbook.dto.CheckoutRequest
-import com.blife.blife.domain.checkoutbook.dto.CheckoutResponse
-import com.blife.blife.domain.checkoutbook.dto.ReturnBookRequest
-import com.blife.blife.domain.checkoutbook.dto.ReturnBookResponse
+import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
 import com.blife.blife.domain.member.repository.MemberRepository
@@ -21,13 +19,19 @@ class CheckoutService(
     private val libBookRepository: LibBookRepository,
     private val memberRepository: MemberRepository,
 ) {
+
+    fun getBookCheckoutStatus(libBookId : Long) : LibBookStatusResponse{
+        val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
+
+        return  libBook.toResponse()
+    }
     @Transactional
     fun createCheckout(ownerId: Long, request: CheckoutRequest): CheckoutResponse {
         val libBookId = request.libBookId
         val userId = request.memberId
         // request.LibBook 이 현재 대여가능한 상태인지 확인
         libraryRepository.findByIdOrNull(ownerId) ?: throw IllegalArgumentException("library")
-        val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("존재하지 않는 책입니다.")
+        val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
 
         if (libBook.checkoutCount >= libBook.copyCount) {
             throw IllegalStateException("이 책의 모든 복사본이 대출 중입니다.")

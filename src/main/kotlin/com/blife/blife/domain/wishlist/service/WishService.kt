@@ -1,14 +1,10 @@
 package com.blife.blife.domain.wishlist.service
 
-import com.blife.blife.domain.book.model.LibBook
-import com.blife.blife.domain.book.repository.BookRepository
-import com.blife.blife.domain.book.repository.LibBookRepository
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.review.dto.WishListResponse
-import com.blife.blife.domain.review.repository.BookReviewRepository
+import com.blife.blife.domain.review.service.LibBookRepository
 import com.blife.blife.domain.wishlist.model.WishList
 import com.blife.blife.domain.wishlist.repository.WishListRepository
-import jakarta.persistence.Id
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -22,7 +18,7 @@ class WishService (
         val libBook = libBookRepository.findByIdOrNull(libBookIdId) ?: throw IllegalArgumentException("book in library")
         val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
         // 같은 사용자가 같은 책을 여러번 찜하였는지 확인, 찜 한 경우가 없을때만 생산 로직 실행, 있을 경우에는 삭제 로직(deleteWishList()
-        if (wishListRepository.existsByMember_IdAndLibBook_Id(userId,libBookIdId)){
+        if (wishListRepository.existsByMemberIdAndLibBookId(userId,libBookIdId)){
             return deleteWishList(userId, libBookIdId)
         } else {
         val wishList = WishList(

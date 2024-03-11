@@ -1,14 +1,14 @@
 # H2 Console
 h2:
-console:
-enabled: true
-path: /h2-console
+  console:
+    enabled: true
+    path: /h2-console
 # DB Settings
 datasource:
-driver-class-name: org.h2.Driver
-url: jdbc:h2:mem:test
-username: sa
-password:
+  driver-class-name: org.h2.Driver
+  url: jdbc:h2:mem:test
+  username: sa
+  password:
 
 logging:
   level:
@@ -19,7 +19,9 @@ logging:
 auth:
   jwt:
     issuer: team.sparta.com
-    secret: PO4c8z41Hia5gJG3oeuFJMRYBB4Ws4aZ
+
+    secret: ${Jwt_Secret}
+
     accessTokenExpirationHour: 168
 
 external:
@@ -29,4 +31,26 @@ external:
     restApiKey: ${Kakao_RestApi_Key}
   naver:
     clientId: ${Naver_Client_Id}
+
     clientSecret: ${Naver_Client_Secret}
+
+spring:
+  mail:
+    host: smtp.naver.com #smtp
+    port: 465
+    username: ${Naver_Username}
+    password: ${Naver_Password}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          #            required: true
+          auth: true
+          #          connectiontimeout: 5000
+          #          timeout: 5000
+          #          writetimeout: 5000
+          ssl:
+            #trust: smtp.naver.com
+            enable: true #반드시 필요 -> SSL 필요로 되어있으면
+

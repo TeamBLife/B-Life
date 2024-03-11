@@ -4,6 +4,7 @@ import com.blife.blife.domain.book.model.Book
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -25,10 +26,15 @@ data class NaverBookSearchResponseItem(
 		description = description,
 		author = author,
 		coverUrl = image,
-		publicationDate = pubdate.let { date ->
-			DateTimeFormatter.ofPattern("yyyyMMdd")
-				.let { LocalDate.parse(date, it) }.atStartOfDay()
-		},
+		publicationDate = getLocalDateTime(),
 		isbn10 = null
 	)
+
+	private fun getLocalDateTime(): LocalDateTime {
+		return pubdate.let { date ->
+			DateTimeFormatter.ofPattern("yyyyMMdd")
+				.let { LocalDate.parse(date, it) }
+				.atStartOfDay()
+		}
+	}
 }

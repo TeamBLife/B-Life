@@ -45,8 +45,9 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("DB에 데이터가 없고 Kakao Api Service가 성공한다면") {
+			every { kakaoClient.getClintName() } returns "KAKAO"
+			every { naverClient.getClintName() } returns "NAVER"
 			every { bookService.getBookByIsbn(any()) } returns null
-
 			val response = Book(
 				1,
 				1,
@@ -66,6 +67,8 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("DB에 데이터가 없고 Kakao Api Service가 실패한다면") {
+			every { kakaoClient.getClintName() } returns "KAKAO"
+			every { naverClient.getClintName() } returns "NAVER"
 			every { bookService.getBookByIsbn(any()) } returns null
 			every { kakaoClient.searchBookDetailInfo(any()) } returns null
 			every { naverClient.searchBookDetailInfo(any()) } returns Book(

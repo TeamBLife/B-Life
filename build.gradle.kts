@@ -57,6 +57,7 @@ dependencies {
 	implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+
 	implementation("me.paulschwarz:spring-dotenv:4.0.0")
 
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
@@ -66,8 +67,10 @@ dependencies {
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 
 	implementation("net.minidev:json-smart:2.5.0")
-
-
+	//Mail
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+    // radis
+	implementation ("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 tasks.withType<KotlinCompile> {

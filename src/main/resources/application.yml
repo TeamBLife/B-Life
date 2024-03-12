@@ -1,3 +1,4 @@
+
 spring:
   profiles:
     active:
@@ -25,4 +26,27 @@ external:
     restApiKey: ${Kakao_RestApi_Key}
   naver:
     clientId: ${Naver_Client_Id}
+
     clientSecret: ${Naver_Client_Secret}
+
+spring:
+  mail:
+    host: smtp.naver.com #smtp
+    port: 465
+    username: ${Naver_Username}
+    password: ${Naver_Password}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          #            required: true
+          auth: true
+          #          connectiontimeout: 5000
+          #          timeout: 5000
+          #          writetimeout: 5000
+          ssl:
+            #trust: smtp.naver.com
+            enable: true #반드시 필요 -> SSL 필요로 되어있으면
+
+

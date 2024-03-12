@@ -1,10 +1,15 @@
 package com.blife.blife.domain.member.controller
 
-import com.blife.blife.domain.member.dto.*
+import com.blife.blife.domain.member.dto.request.MemberLoginRequest
+import com.blife.blife.domain.member.dto.request.MemberOwnerSignupRequest
+import com.blife.blife.domain.member.dto.request.MemberSignupRequest
+import com.blife.blife.domain.member.dto.response.MemberLoginResponse
+import com.blife.blife.domain.member.dto.response.MemberResponse
 import com.blife.blife.domain.member.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,6 +41,7 @@ class MemberController (
             .body(memberService.ownerSignup(ownerSignupRequest))
     }
 // 소프트 딜리트 후 회원 탈ㅊ퇴 but 3일 이내에 다시 회월 탈퇴 철회를 하면은 바로 복귀
+    @DeleteMapping
     fun signout(){
 
     }

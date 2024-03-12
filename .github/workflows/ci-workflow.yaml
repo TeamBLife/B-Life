@@ -30,6 +30,9 @@ jobs:
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
 
+      - name: env file test
+        run: cat ./src/main/resources/.env
+
       - name: Install java
         uses: actions/setup-java@v4
         with:

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class BookResponse(
 	val isbn10: Long?,
-	val isbn13: Long?,
+	val isbn13: Long,
 	val coverUrl: String,
 	val author: String,
 	val description: String,

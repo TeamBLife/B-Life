@@ -19,9 +19,7 @@ logging:
 auth:
   jwt:
     issuer: team.sparta.com
-
     secret: ${Jwt_Secret}
-
     accessTokenExpirationHour: 168
 
 external:
@@ -31,7 +29,6 @@ external:
     restApiKey: ${Kakao_RestApi_Key}
   naver:
     clientId: ${Naver_Client_Id}
-
     clientSecret: ${Naver_Client_Secret}
 
 spring:

@@ -2,8 +2,8 @@ package com.blife.blife.domain.checkoutbook.dto
 
 
 data class LibBookStatusResponse(
-    val libBook: Long,
-    val bookQuantity: Short,
-    val checkoutCount: Short,
+    val libBookName: String,
+    val bookQuantity: Long,
+    val checkoutCount: Long,
     var loanAvailable: Boolean
 )

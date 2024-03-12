@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class CheckoutResponse (
     val id : Long,
+    val library : String,
     val memberId : Long,
     val libBookId : Long,
     val checkoutTime : LocalDateTime,

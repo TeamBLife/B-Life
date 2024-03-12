@@ -15,7 +15,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 interface LibBookRepository : JpaRepository<LibBook, Long> {
-    fun findByBookIdAndLibId(bookId : Long, libraryId : Long) : LibBook?
 }
 
 @Service

@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity
 class Library(
-	@Column(name = "member_id")
+	@JoinColumn(name = "member_id")
 	@OneToOne(fetch = FetchType.LAZY)
 	val member: Member,
 

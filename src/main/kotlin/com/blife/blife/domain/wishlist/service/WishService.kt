@@ -24,12 +24,15 @@ class WishService (
         val wishList = WishList(
             member = member, libBook =  libBook)
             wishListRepository.save(wishList)
-            return WishListResponse(wishList.id!!, member.id!!, libBook.id)
+            return WishListResponse(wishList.id!!, member.id!!, libBook.id!!)
         }
     }
-
     fun deleteWishList(userId: Long, libBookIdId: Long)  {
         val wishList = wishListRepository.findByMemberIdAndLibBookId(userId , libBookIdId)
         return wishListRepository.delete(wishList)
     }
+
+
+
+
 }

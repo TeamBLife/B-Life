@@ -68,8 +68,10 @@ dependencies {
 	implementation("net.minidev:json-smart:2.5.0")
 	//Mail
 	implementation("org.springframework.boot:spring-boot-starter-mail")
-    // radis
+    //redis
 	implementation ("org.springframework.boot:spring-boot-starter-data-redis")
+
+	implementation ("org.springframework.boot:spring-boot-starter-oauth2-client")
 }
 
 tasks.withType<KotlinCompile> {

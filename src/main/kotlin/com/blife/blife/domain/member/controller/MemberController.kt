@@ -6,14 +6,12 @@ import com.blife.blife.domain.member.dto.request.MemberSignupRequest
 import com.blife.blife.domain.member.dto.response.MemberLoginResponse
 import com.blife.blife.domain.member.dto.response.MemberResponse
 import com.blife.blife.domain.member.service.MemberService
+import com.blife.blife.global.security.UserPrincipal
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/members")
@@ -41,8 +39,13 @@ class MemberController (
             .body(memberService.ownerSignup(ownerSignupRequest))
     }
 // 소프트 딜리트 후 회원 탈ㅊ퇴 but 3일 이내에 다시 회월 탈퇴 철회를 하면은 바로 복귀
-    @DeleteMapping
-    fun signout(){
+    @PutMapping("/{memberId}/signout")
+    fun signout(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
+    ): ResponseEntity<Unit>{
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(memberService.signout(userPrincipal.id))
 
     }
 }

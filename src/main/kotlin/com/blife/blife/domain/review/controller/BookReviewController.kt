@@ -3,6 +3,7 @@ package com.blife.blife.domain.review.controller
 import com.blife.blife.domain.review.dto.BookReviewRequest
 import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.service.BookReviewService
+import com.blife.blife.global.security.UserPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

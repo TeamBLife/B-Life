@@ -1,7 +1,7 @@
-package com.blife.blife.domain.Oauth2.controller
+package com.blife.blife.domain.oauth2.controller
 
-import com.blife.blife.domain.Oauth2.client.oauth2.kakao.KakaoOAuth2Client
-import com.blife.blife.domain.Oauth2.service.KakaoOAuth2LoginService
+import com.blife.blife.domain.oauth2.client.oauth2.kakao.KakaoOAuth2Client
+import com.blife.blife.domain.oauth2.service.KakaoOAuth2LoginService
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam

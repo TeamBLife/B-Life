@@ -1,4 +1,4 @@
-package com.blife.blife.domain.Oauth2.model
+package com.blife.blife.domain.oauth2.model
 
 import jakarta.persistence.*
 
@@ -16,16 +16,8 @@ class SocialMember(
     val email: String
 
 ){
-    companion object{
-        fun ofKakao(id: Long, nickname: String, email: String): SocialMember {
-            return SocialMember(
-                provider = OAuth2Provider.KAKAO,
-                providerId = id.toString(),
-                nickname = nickname,
-                email = email
-            )
-        }
-    }
+
+
     
 enum class OAuth2Provider{
     KAKAO, NAVER

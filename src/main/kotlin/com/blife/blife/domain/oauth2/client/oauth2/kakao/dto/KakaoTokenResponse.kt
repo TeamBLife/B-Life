@@ -1,6 +1,5 @@
-package com.blife.blife.domain.Oauth2.client.oauth2.kakao.dto
+package com.blife.blife.domain.oauth2.client.oauth2.kakao.dto
 
-import com.blife.blife.domain.Oauth2.model.SocialMember
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 

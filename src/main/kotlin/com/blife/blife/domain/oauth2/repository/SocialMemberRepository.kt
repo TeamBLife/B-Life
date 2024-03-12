@@ -1,6 +1,6 @@
-package com.blife.blife.domain.Oauth2.repository
+package com.blife.blife.domain.oauth2.repository
 
-import com.blife.blife.domain.Oauth2.model.SocialMember
+import com.blife.blife.domain.oauth2.model.SocialMember
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

@@ -1,4 +1,4 @@
-package com.blife.blife.domain.Oauth2.client.config
+package com.blife.blife.domain.oauth2.client.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

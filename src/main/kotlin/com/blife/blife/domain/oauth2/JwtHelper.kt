@@ -1,4 +1,4 @@
-package com.blife.blife.domain.Oauth2
+package com.blife.blife.domain.oauth2
 
 import org.springframework.stereotype.Component
 

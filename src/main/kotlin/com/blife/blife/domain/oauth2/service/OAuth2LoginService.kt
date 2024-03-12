@@ -1,12 +1,14 @@
-package com.blife.blife.domain.Oauth2.service
+package com.blife.blife.domain.oauth2.service
 
-import com.blife.blife.domain.Oauth2.JwtHelper
-import com.blife.blife.domain.Oauth2.client.oauth2.kakao.KakaoOAuth2Client
+import com.blife.blife.domain.oauth2.JwtHelper
+import com.blife.blife.domain.oauth2.client.oauth2.OAuth2Client
+import com.blife.blife.domain.oauth2.client.oauth2.OAuth2ClientService
+import com.blife.blife.domain.oauth2.model.SocialMember
 import org.springframework.stereotype.Service
 
 @Service
-class KakaoOAuth2LoginService(
-    private val kakaoOAuth2Client: KakaoOAuth2Client,
+class OAuth2LoginService(
+    private val oAuth2ClientService: OAuth2ClientService,
     private val socialMemberService: SocialMemberService,
     private val jwtHelper: JwtHelper
 ) {
@@ -16,9 +18,8 @@ class KakaoOAuth2LoginService(
     // 3. 사용자 정보로 SocialMember 있으면 조회 없으면 회원가입
     // 4. SocialMember 를 토대로 우리쪽 액세스 토큰 발급 후 응답
 
-    fun login(authorizationCode: String): String {
-        return kakaoOAuth2Client.getAccessToken(authorizationCode)
-            .let { kakaoOAuth2Client.retrieveUserInfo(it) }
+    fun login(provider: SocialMember.OAuth2Provider, authorizationCode: String): String {
+        return oAuth2ClientService.login(provider, authorizationCode)
             .let { socialMemberService.registerIfAbsent(it) }
             .let { jwtHelper.generateAccessToken(it.id!!) }
     }

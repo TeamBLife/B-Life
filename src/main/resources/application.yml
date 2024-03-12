@@ -1,27 +1,22 @@
-# H2 Console
-h2:
-  console:
-    enabled: true
-    path: /h2-console
-# DB Settings
-datasource:
-  driver-class-name: org.h2.Driver
-  url: jdbc:h2:mem:test
-  username: sa
-  password:
 
-logging:
-  level:
-    org:
-      springframework:
-        security: debug
+spring:
+  profiles:
+    active:
+      - local
+    include:
+      - db
+    group:
+      local:
+        - db-local
+      test:
+        - db-dev
+      prod:
+        - db-prod
 
 auth:
   jwt:
     issuer: team.sparta.com
-
     secret: ${Jwt_Secret}
-
     accessTokenExpirationHour: 168
 
 external:
@@ -53,4 +48,5 @@ spring:
           ssl:
             #trust: smtp.naver.com
             enable: true #반드시 필요 -> SSL 필요로 되어있으면
+
 

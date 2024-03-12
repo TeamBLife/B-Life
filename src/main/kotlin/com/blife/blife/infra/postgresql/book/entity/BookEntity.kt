@@ -1,11 +1,13 @@
-package com.blife.blife.infra.postgresql.book
+package com.blife.blife.infra.postgresql.book.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "book")
 data class BookEntity(
 	val bookName: String,
 	val author: String, // NOTE: 저자가 2명 이상일 경우 [ , ]로 나누어 관리하도록 한다.
@@ -13,7 +15,7 @@ data class BookEntity(
 	@Column(unique = true)
 	val isbn10: Long?,
 	@Id @Column(unique = true)
-	val isbn13: Long?,
+	val isbn13: Long,
 
 	val coverUrl: String,
 	val description: String,

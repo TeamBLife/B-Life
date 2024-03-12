@@ -1,43 +1,42 @@
 package com.blife.blife.domain.review.model
 
-import com.blife.blife.domain.book.model.LibBook
+import com.blife.blife.domain.library.model.LibBook
 import com.blife.blife.domain.member.model.Member
-import com.blife.blife.domain.review.dto.BookReviewResponse
 import com.blife.blife.domain.review.dto.LibBookReviewResponse
+import com.blife.blife.infra.postgresql.library.entity.LibBookEntity
 import jakarta.persistence.*
 
-@Entity
-(name = "libBookReview")
-class LibBookReview (
-    @ManyToOne
-    @JoinColumn(name = "libBook_id")
-    var libBook: LibBook,
+@Entity(name = "libBookReview")
+class LibBookReview(
+	@ManyToOne
+	@JoinColumn(name = "libBook_id")
+	var libBook: LibBookEntity,
 
-    @Column(name = "point")
-    var point : Float,
+	@Column(name = "point")
+	var point: Float,
 
-    @Column(name = "comment")
-    var comment : String,
+	@Column(name = "comment")
+	var comment: String,
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    val member : Member,
+	@ManyToOne
+	@JoinColumn(name = "member_id")
+	val member: Member,
 
-    @Column(name = "status")
-    var status : String,
-){
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+	@Column(name = "status")
+	var status: String,
+) {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null
 }
 
 
-fun LibBookReview.toLibBookResponse(): LibBookReviewResponse{
-    return LibBookReviewResponse(
-        id = id!!,
-        name = member.name,
-        point = point,
-        comment = comment,
-        status = status,
-    )
+fun LibBookReview.toLibBookResponse(): LibBookReviewResponse {
+	return LibBookReviewResponse(
+		id = id!!,
+		name = member.name,
+		point = point,
+		comment = comment,
+		status = status,
+	)
 }

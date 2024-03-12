@@ -1,4 +1,3 @@
-
 spring:
   profiles:
     active:
@@ -13,23 +12,6 @@ spring:
       prod:
         - db-prod
 
-auth:
-  jwt:
-    issuer: team.sparta.com
-    secret: ${Jwt_Secret}
-    accessTokenExpirationHour: 168
-
-external:
-  data4library:
-    secretKey: ${Data4Lib_Secret_Key}
-  kakao:
-    restApiKey: ${Kakao_RestApi_Key}
-  naver:
-    clientId: ${Naver_Client_Id}
-
-    clientSecret: ${Naver_Client_Secret}
-
-spring:
   mail:
     host: smtp.naver.com #smtp
     port: 465
@@ -49,4 +31,21 @@ spring:
             #trust: smtp.naver.com
             enable: true #반드시 필요 -> SSL 필요로 되어있으면
 
+
+
+auth:
+  jwt:
+    issuer: team.sparta.com
+    secret: ${Jwt_Secret}
+    accessTokenExpirationHour: 168
+
+external:
+  data4library:
+    secretKey: ${Data4Lib_Secret_Key}
+  kakao:
+    restApiKey: ${Kakao_RestApi_Key}
+  naver:
+    clientId: ${Naver_Client_Id}
+
+    clientSecret: ${Naver_Client_Secret}
 

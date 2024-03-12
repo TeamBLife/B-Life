@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.naver.com #smtp
     port: 465
-    username: ${Naver_Username}
-    password: ${Naver_Password}
+    username: ${NAVER_USERNAME}
+    password: ${NAVER_PASSWORD}
     properties:
       mail:
         smtp:
@@ -36,16 +36,15 @@ spring:
 auth:
   jwt:
     issuer: team.sparta.com
-    secret: ${Jwt_Secret}
+    secret: ${JWT_SECRET}
     accessTokenExpirationHour: 168
 
 external:
   data4library:
-    secretKey: ${Data4Lib_Secret_Key}
+    secretKey: ${DATA4LIB_SECRET_KEY}
   kakao:
-    restApiKey: ${Kakao_RestApi_Key}
+    restApiKey: ${KAKAO_RESTAPI_KEY}
   naver:
-    clientId: ${Naver_Client_Id}
-
-    clientSecret: ${Naver_Client_Secret}
+    clientId: ${NAVER_CLIENT_ID}
+    clientSecret: ${NAVER_CLIENT_SECRET}
 

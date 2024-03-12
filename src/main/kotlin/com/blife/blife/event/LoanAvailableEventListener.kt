@@ -10,13 +10,16 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
-class LoanAvailableEventListener {
+class LoanAvailableEventListener() {
 
     @Autowired
     lateinit var eventPublisher: ApplicationEventPublisher
     @PostPersist
     @PostUpdate
     fun onLoanAvailableChange(libBook: LibBook) {
-        // 메서드 구현...
+        if (libBook.loanAvailable) {
+            // 이벤트 발행 로직
+            eventPublisher.publishEvent(LoanAvailableEvent(libBook))
+        }
     }
 }

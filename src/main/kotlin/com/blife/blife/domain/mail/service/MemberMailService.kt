@@ -36,9 +36,9 @@ class MemberMailService(
         return message
     }
 
+
     private fun getText(certificationNum: String): String {
         return certificationNum
 
     }
-
 }

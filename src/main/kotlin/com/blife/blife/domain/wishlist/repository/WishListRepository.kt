@@ -8,7 +8,6 @@ interface WishListRepository : JpaRepository<WishList, Long> {
     fun existsByMemberIdAndLibBookId(memberId: Long, libBookId: Long): Boolean
 
     fun findByMemberIdAndLibBookId(memberId: Long, libBookId: Long) : WishList
-    fun findByLibBookIdAndNotificationCountLessThan(libBookId : Long, NotificationCount : Short) :List <WishList>
 
-
+    fun findByLibBookId(libBookId: Long) : List<WishList>
 }

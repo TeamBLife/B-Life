@@ -5,7 +5,7 @@ import com.blife.blife.domain.book.repository.IBookRepository
 import org.springframework.stereotype.Service
 
 @Service
-class BookService(
+class 	BookService(
 	private val bookRepository: IBookRepository
 ) {
 	fun getBookByIsbn(isbn: Long): Book? =

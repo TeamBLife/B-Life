@@ -22,9 +22,9 @@ class WishService (
             return deleteWishList(userId, libBookIdId)
         } else {
         val wishList = WishList(
-            member = member, libBook =  libBook,  notificationCount = 0, maxNotificationCount = 3)
+            member = member, libBook =  libBook)
             wishListRepository.save(wishList)
-            return WishListResponse(wishList.id!!, member.id!!, libBook.id!!)
+            return WishListResponse(wishList.id!!, member.id!!, libBook.id)
         }
     }
 

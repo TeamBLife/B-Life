@@ -1,6 +1,6 @@
 package com.blife.blife.domain.checkoutbook.service
 
-import com.blife.blife.domain.book.model.toResponse
+
 import com.blife.blife.domain.book.repository.LibraryRepository
 import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
@@ -23,8 +23,13 @@ class CheckoutService(
     fun getBookCheckoutStatus(libBookId : Long) : LibBookStatusResponse{
         val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
 
-        return  libBook.toResponse()
-    }
+         return LibBookStatusResponse(
+                libBook = libBookId,
+                bookQuantity = libBook.bookQuantity,
+                checkoutCount = libBook.checkoutCount,
+                loanAvailable = libBook.loanAvailable
+            )
+        }
     @Transactional
     fun createCheckout(ownerId: Long, request: CheckoutRequest): CheckoutResponse {
         val libBookId = request.libBookId
@@ -33,7 +38,7 @@ class CheckoutService(
         libraryRepository.findByIdOrNull(ownerId) ?: throw IllegalArgumentException("library")
         val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
 
-        if (libBook.checkoutCount >= libBook.copyCount) {
+        if (libBook.checkoutCount >= libBook.bookQuantity) {
             throw IllegalStateException("이 책의 모든 복사본이 대출 중입니다.")
         }
 
@@ -53,7 +58,7 @@ class CheckoutService(
 
         libBook.apply {
             checkoutCount++
-            loanAvailable = (checkoutCount < copyCount) // 대출 가능 여부 업데이트
+            loanAvailable = (checkoutCount < bookQuantity) // 대출 가능 여부 업데이트
         }
         libBookRepository.save(libBook)
 
@@ -72,7 +77,7 @@ class CheckoutService(
         // CheckoutResponse 반환
         return CheckoutResponse(
             id = newCheckout.id!!,
-            libBookId = newCheckout.libBook.id!!,
+            libBookId = newCheckout.libBook.id,
             memberId = newCheckout.member.id!!,
             checkoutTime = newCheckout.checkoutTime!!,
             dueDate = newCheckout.dueDate
@@ -99,7 +104,7 @@ class CheckoutService(
             checkoutCount = (checkoutCount - 1).toShort()
             loanAvailable = true
             // libBook 엔티티의 loanAvailable가 true로 변환됨
-            loanAvailable = copyCount > checkoutCount
+            loanAvailable = bookQuantity > checkoutCount
         }
         libBookRepository.save(libBook)
 

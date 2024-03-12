@@ -9,6 +9,12 @@ on:
       - "Bugfix/**"
       - "Refac/**"
       - "Test/**"
+  push:
+    tags:
+      - "Feat/**"
+      - "Bugfix/**"
+      - "Refac/**"
+      - "Test/**"
 
 jobs:
   build:

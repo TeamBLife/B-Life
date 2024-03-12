@@ -1,7 +1,7 @@
 package com.blife.blife.domain.review.repository
 
 import com.blife.blife.domain.review.model.BookReview
-import com.blife.blife.infra.postgresql.book.BookEntity
+import com.blife.blife.infra.postgresql.book.entity.BookEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

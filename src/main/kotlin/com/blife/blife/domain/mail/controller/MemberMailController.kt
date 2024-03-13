@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/user-certification")
 class MemberMailController(
-    private val memberMailService: MemberMailService
+	private val memberMailService: MemberMailService
 ) {
     @PostMapping("")
     fun memberCertification(@RequestBody request: CertificationRequest): ResponseEntity<String>{

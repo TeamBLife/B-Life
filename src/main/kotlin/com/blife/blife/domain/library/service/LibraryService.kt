@@ -3,7 +3,6 @@ package com.blife.blife.domain.library.service
 import com.blife.blife.domain.library.model.LibBook
 import com.blife.blife.domain.library.model.Library
 import com.blife.blife.domain.library.repository.ILibraryRepository
-import com.blife.blife.infra.postgresql.library.PostgresqlLibraryRepository
 import org.springframework.stereotype.Service
 
 @Service

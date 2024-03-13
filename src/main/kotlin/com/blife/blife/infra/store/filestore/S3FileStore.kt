@@ -1,6 +1,6 @@
 package com.blife.blife.infra.store.filestore
 
-class S3FileStore: IFileStore {
+class S3FileStore : IFileStore {
 	/**
 	 * @return fileName 이 반환 된다. 실패시 null 반환
 	 */

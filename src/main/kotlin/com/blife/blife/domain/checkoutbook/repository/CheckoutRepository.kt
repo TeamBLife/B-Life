@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CheckoutRepository : JpaRepository<CheckoutBook, Long> {
 
-    fun countByLibBookIdAndReturnedFalse(libBookId: Long): Long
+	fun countByLibBookIdAndReturnedFalse(libBookId: Long): Long
 
 
-    fun countByMemberIdAndReturnedFalse(memberId: Long): Long
+	fun countByMemberIdAndReturnedFalse(memberId: Long): Long
 
-    fun findByMemberIdAndLibBookIdAndReturnedFalse(memberId: Long, libBookId: Long): CheckoutBook?
+	fun findByMemberIdAndLibBookIdAndReturnedFalse(memberId: Long, libBookId: Long): CheckoutBook?
 }

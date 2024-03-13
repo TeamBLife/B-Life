@@ -1,6 +1,6 @@
 package com.blife.blife.infra.store.filestore
 
-class LocalFileStore: IFileStore {
+class LocalFileStore : IFileStore {
 	/**
 	 * @return fileName 이 반환 된다. 실패시 null 반환
 	 */

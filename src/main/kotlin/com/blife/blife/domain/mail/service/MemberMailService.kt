@@ -1,12 +1,11 @@
 package com.blife.blife.domain.mail.service
 
-import com.blife.blife.domain.mail.RedisUtils
+//import com.blife.blife.domain.mail.RedisUtils
 import com.blife.blife.global.exception.MailSendException
 import jakarta.mail.Message
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 
 @Service
@@ -32,8 +31,8 @@ class MemberMailService(
 
 
 
-    private fun getText(certificationNum: String): String {
-        return certificationNum
+	private fun getText(certificationNum: String): String {
+		return certificationNum
 
-    }
+	}
 }

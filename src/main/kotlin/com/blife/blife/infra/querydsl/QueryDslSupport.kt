@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository
 @Repository
 abstract class QueryDslSupport {
 
-    @PersistenceContext
-    protected lateinit var entityManager: EntityManager
+	@PersistenceContext
+	protected lateinit var entityManager: EntityManager
 
-    protected val queryFactory: JPAQueryFactory
-        get() = JPAQueryFactory(entityManager)
+	protected val queryFactory: JPAQueryFactory
+		get() = JPAQueryFactory(entityManager)
 }

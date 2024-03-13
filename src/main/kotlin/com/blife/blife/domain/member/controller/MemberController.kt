@@ -1,5 +1,6 @@
 package com.blife.blife.domain.member.controller
 
+import com.blife.blife.domain.mail.service.MemberMailService
 import com.blife.blife.domain.member.dto.request.MemberLoginRequest
 import com.blife.blife.domain.member.dto.request.MemberOwnerSignupRequest
 import com.blife.blife.domain.member.dto.request.MemberSignupRequest
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/members")
 class MemberController(
-	private val memberService: MemberService
+	private val memberService: MemberService,
+	private val memberMailService: MemberMailService
 ) {
 	@PostMapping("/signup")
 	fun signup(@RequestBody @Valid signupRequest: MemberSignupRequest): ResponseEntity<MemberResponse> {

@@ -12,5 +12,4 @@ data class MemberOwnerSignupRequest(
 		message = "비밀번호는 영어 소문자와 대문자, 숫자, 특수문자(~!@#\$%^&*)로 이루어져 있어야 합니다."
 	)
 	val password: String,
-	val libCode: String
 )

@@ -25,12 +25,12 @@ class MemberMailController(
     }
 
 
-//    @PostMapping("/check")
-//    fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String>{
-//        memberMailService.checkCertification(request.certificationNumber)
-//        return ResponseEntity
-//            .status(HttpStatus.OK)
-//            .body("Success")
-//    }
+    @PostMapping("/check")
+    fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String>{
+        memberMailService.checkCertification(request.certificationNumber)
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body("Success")
+    }
 
 }

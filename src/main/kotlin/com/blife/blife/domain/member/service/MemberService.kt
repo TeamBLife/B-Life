@@ -36,7 +36,7 @@ class MemberService(
 	fun login(request: MemberLoginRequest): MemberLoginResponse {
 		val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
 
-		if (user.role.name != request.role || !passwordEncoder.matches(request.password, user.password)) {
+		if (!passwordEncoder.matches(request.password, user.password)) {
 			throw InvalidCredentialException("Email is already in use")
 		}
 

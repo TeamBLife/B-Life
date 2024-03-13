@@ -18,12 +18,11 @@ class WishService(
 		val libBook = libBookRepository.findByIdOrNull(libBookIdId) ?: throw IllegalArgumentException("book in library")
 		val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
 		// 같은 사용자가 같은 책을 여러번 찜하였는지 확인, 찜 한 경우가 없을때만 생산 로직 실행, 있을 경우에는 삭제 로직(deleteWishList()
-		if (wishListRepository.existsByMember_IdAndLibBook_Id(userId, libBookIdId)) {
+		if (wishListRepository.existsByMemberIdAndLibBookId(userId, libBookIdId)) {
 			return deleteWishList(userId, libBookIdId)
 		} else {
 			val wishList = WishList(
-				member = member, libBook = libBook, notificationCount = 0, maxNotificationCount = 3
-			)
+				member = member, libBook = libBook)
 			wishListRepository.save(wishList)
 			return WishListResponse(wishList.id!!, member.id!!, libBook.id!!)
 		}

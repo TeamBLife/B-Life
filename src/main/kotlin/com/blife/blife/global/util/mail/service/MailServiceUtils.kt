@@ -6,7 +6,7 @@ class MailServiceUtils {
 		fun certificationNum(): Long {
 			val charset = ('0' .. '9')
 			val rangeRandom = List(6) { charset.random() }
-				.joinToString { "" }
+				.joinToString("")
 
 			return rangeRandom.toLong()
 		}

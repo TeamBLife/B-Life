@@ -31,34 +31,15 @@ spring:
             trust: smtp.naver.com
             enable: true #반드시 필요 -> SSL 필요로 되어있으면
 
-# H2 Console
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-# DB Settings
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: create
-  logging:
-    level:
-      org:
-        springframework:
-          security: debug
 
 oauth2:
   kakao:
-    client_id: 	24145d59fd63241d2791c882bee45c8a
-    redirect url: http://localhost:8080/oauth2/kakao
+    client_id: ${OAUTH2_KAKAO_CLIENT_ID}
+    redirect_url: "http://localhost:8080/oauth2/kakao"
   naver:
-    client-id: 3sEqGbtQWik2xYCDa5mZ
-    client-secret: ${Naver_Client_Secret}
-    redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/naver)
+    client_id: ${OAUTH2_NAVER_CLIENT_ID}
+    client_secret: ${OAUTH2_NAVER_CLIENT_SECRET}
+    redirect_url: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/naver)
 
 
 

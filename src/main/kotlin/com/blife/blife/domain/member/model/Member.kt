@@ -8,16 +8,20 @@ import jakarta.persistence.*
 class Member(
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    val role: MemberRole,
+    var role: MemberRole,
 
     @Column(name = "name")
-    val name: String,
+    var name: String,
 
     @Column(name = "email", unique = true)
     val email: String,
 
     @Column(name = "password")
     val password: String,
+
+    @Column(name = "is_deleted")
+    var isDeleted: Boolean = false,
+
 
 ) {
     @Id

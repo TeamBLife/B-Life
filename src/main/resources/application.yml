@@ -22,14 +22,24 @@ spring:
         smtp:
           starttls:
             enable: true
-          #            required: true
+            required: true
           auth: true
           #          connectiontimeout: 5000
           #          timeout: 5000
           #          writetimeout: 5000
           ssl:
-            #trust: smtp.naver.com
+            trust: smtp.naver.com
             enable: true #반드시 필요 -> SSL 필요로 되어있으면
+
+
+oauth2:
+  kakao:
+    client_id: ${OAUTH2_KAKAO_CLIENT_ID}
+    redirect_url: "http://localhost:8080/oauth2/kakao"
+  naver:
+    client_id: ${OAUTH2_NAVER_CLIENT_ID}
+    client_secret: ${OAUTH2_NAVER_CLIENT_SECRET}
+    redirect_url: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/naver)
 
 
 

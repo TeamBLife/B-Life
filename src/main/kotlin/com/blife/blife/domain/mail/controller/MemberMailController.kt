@@ -18,19 +18,19 @@ class MemberMailController(
 ) {
     @PostMapping("")
     fun memberCertification(@RequestBody request: CertificationRequest): ResponseEntity<String>{
-        memberMailService.sendMail(request.email)
+        memberMailService.memberSendMail(request.email)
         return ResponseEntity
             .status(HttpStatus.OK)
             .body("Success")
     }
 
 
-    @PostMapping("/check")
-    fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String>{
-        memberMailService.checkCertification(request.certificationNumber)
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body("Success")
-    }
+//    @PostMapping("/check")
+//    fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String>{
+//        memberMailService.checkCertification(request.certificationNumber)
+//        return ResponseEntity
+//            .status(HttpStatus.OK)
+//            .body("Success")
+//    }
 
 }

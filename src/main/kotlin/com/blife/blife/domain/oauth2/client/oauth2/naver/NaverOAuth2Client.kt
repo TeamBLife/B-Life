@@ -34,7 +34,8 @@ class NaverOAuth2Client(
             "grant_type" to "authorization_code",
             "client_id" to clientId,
             "client_secret" to clientSecret,
-            "code" to authorizationCode
+            "code" to authorizationCode,
+            "state" to "실패"
         )
         return restClient.post()
             .uri("$NAVER_API_BASE_URL/token")

@@ -1,10 +1,8 @@
 package com.blife.blife.domain.oauth2.service
 
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2LoginUserInfo
-import com.blife.blife.domain.oauth2.client.oauth2.kakao.dto.KakaoUserInfoResponse
 import com.blife.blife.domain.oauth2.model.SocialMember
 import com.blife.blife.domain.oauth2.repository.SocialMemberRepository
-import com.nimbusds.openid.connect.sdk.UserInfoResponse
 import org.springframework.stereotype.Service
 
 @Service

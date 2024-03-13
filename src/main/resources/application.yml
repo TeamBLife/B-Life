@@ -7,7 +7,7 @@ spring:
     group:
       local:
         - db-local
-      test:
+      dev:
         - db-dev
       prod:
         - db-prod

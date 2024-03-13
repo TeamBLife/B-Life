@@ -1,6 +1,5 @@
 package com.blife.blife.domain.review.model
 
-import com.blife.blife.domain.library.model.LibBook
 import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.review.dto.LibBookReviewResponse
 import com.blife.blife.infra.postgresql.library.entity.LibBookEntity

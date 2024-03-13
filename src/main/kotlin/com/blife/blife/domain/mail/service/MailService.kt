@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class MailService(
-    private val javaMailSender: JavaMailSender,
+	private val javaMailSender: JavaMailSender,
 ) {
-    fun sendMail(email: String, subject: String, content: String, isHtmlContent: Boolean = false) {
-        val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
-        val helper = MimeMessageHelper(mimeMessage, "utf-8")
-        helper.setTo(email)
-        helper.setSubject(subject)
-        helper.setText(content, isHtmlContent)
+	fun sendMail(email: String, subject: String, content: String, isHtmlContent: Boolean = false) {
+		val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
+		val helper = MimeMessageHelper(mimeMessage, "utf-8")
+		helper.setTo(email)
+		helper.setSubject(subject)
+		helper.setText(content, isHtmlContent)
 
-        javaMailSender.send(mimeMessage)
+		javaMailSender.send(mimeMessage)
 
-    }
+	}
 }

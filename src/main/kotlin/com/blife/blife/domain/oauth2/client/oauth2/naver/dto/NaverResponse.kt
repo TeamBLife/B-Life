@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
 class NaverResponse<T>(
-    @JsonProperty("resultcode") val code: String,
-    val message: String,
-    val response: T
+	@JsonProperty("resultcode") val code: String,
+	val message: String,
+	val response: T
 
-    //네이버는 모든 API에 대해 한번 랩핑해서 준다. 확인하기
+	//네이버는 모든 API에 대해 한번 랩핑해서 준다. 확인하기
 )

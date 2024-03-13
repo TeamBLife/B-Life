@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface WishListRepository : JpaRepository<WishList, Long> {
 
-    fun existsByMemberIdAndLibBookId(memberId: Long, libBookId: Long): Boolean
+	fun existsByMemberIdAndLibBookId(memberId: Long, libBookId: Long): Boolean
 
-    fun findByMemberIdAndLibBookId(memberId: Long, libBookId: Long) : WishList
+	fun findByMemberIdAndLibBookId(memberId: Long, libBookId: Long): WishList
 
-    fun findByLibBookId(libBookId: Long) : List<WishList>
+	fun findByLibBookId(libBookId: Long): List<WishList>
 }

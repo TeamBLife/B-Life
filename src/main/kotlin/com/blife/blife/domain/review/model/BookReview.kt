@@ -6,30 +6,31 @@ import com.blife.blife.infra.postgresql.book.entity.BookEntity
 import jakarta.persistence.*
 
 @Entity(name = "bookReview")
-class BookReview (
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    var book: BookEntity,
+class BookReview(
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	var book: BookEntity,
 
-    @Column(name = "point")
-    var point : Float,
+	@Column(name = "point")
+	var point: Float,
 
-    @Column(name = "comment")
-    var comment : String,
+	@Column(name = "comment")
+	var comment: String,
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    val member : Member,
-){
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+	@ManyToOne
+	@JoinColumn(name = "member_id")
+	val member: Member,
+) {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null
 }
+
 fun BookReview.toResponse(): BookReviewResponse {
-    return BookReviewResponse(
-        id = id!!,
-        name = member.name,
-        point = point,
-        comment = comment
-    )
+	return BookReviewResponse(
+		id = id!!,
+		name = member.name,
+		point = point,
+		comment = comment
+	)
 }

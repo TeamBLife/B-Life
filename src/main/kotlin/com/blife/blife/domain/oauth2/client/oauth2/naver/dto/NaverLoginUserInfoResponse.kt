@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
 class NaverLoginUserInfoResponse(
-    id: String,
-    nickname: String,
-    email: String
-):OAuth2LoginUserInfo(
-    provider = SocialMember.OAuth2Provider.NAVER,
-    id = id,
-    nickname = nickname,
-    email = email
+	id: String,
+	nickname: String,
+	email: String
+) : OAuth2LoginUserInfo(
+	provider = SocialMember.OAuth2Provider.NAVER,
+	id = id,
+	nickname = nickname,
+	email = email
 )

@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/user-certification")
 class MemberMailController(
-    private val memberMailService: MemberMailService
+	private val memberMailService: MemberMailService
 ) {
-    @PostMapping("")
-    fun memberCertification(@RequestBody request: CertificationRequest): ResponseEntity<String>{
-        memberMailService.sendMail(request.email)
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body("Success")
-    }
+	@PostMapping("")
+	fun memberCertification(@RequestBody request: CertificationRequest): ResponseEntity<String> {
+		memberMailService.sendMail(request.email)
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body("Success")
+	}
 
 
-    @PostMapping("/check")
-    fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String>{
-        memberMailService.checkCertification(request.certificationNumber)
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body("Success")
-    }
+	@PostMapping("/check")
+	fun memberCheckCertification(@RequestBody request: CertificationCheckRequest): ResponseEntity<String> {
+		memberMailService.checkCertification(request.certificationNumber)
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body("Success")
+	}
 
 }

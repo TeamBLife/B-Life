@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class OAuth2LoginController(
-    private val oAuth2LoginService: OAuth2LoginService,
-    private val oAuth2ClientService: OAuth2ClientService
+	private val oAuth2LoginService: OAuth2LoginService,
+	private val oAuth2ClientService: OAuth2ClientService
 ) {
 
-    //1. 로그인 페이지로 Redirect 해주는 API
-    @GetMapping("/oauth2/login/{provider}")
-    fun redirectLoginPage(
-        @PathVariable provider: SocialMember.OAuth2Provider,
-        response: HttpServletResponse
-    ) {
-        val loginPageUrl =  oAuth2ClientService.generateLoginPageUrl(provider)
-        response.sendRedirect(loginPageUrl)
-    }
+	//1. 로그인 페이지로 Redirect 해주는 API
+	@GetMapping("/oauth2/login/{provider}")
+	fun redirectLoginPage(
+		@PathVariable provider: SocialMember.OAuth2Provider,
+		response: HttpServletResponse
+	) {
+		val loginPageUrl = oAuth2ClientService.generateLoginPageUrl(provider)
+		response.sendRedirect(loginPageUrl)
+	}
 
-    //2. AuthorizationCode를 이용해 사용자 인증을 처리해 주는 API
-    @GetMapping("/oauth2/callback/{provider}")
-    fun callback(
-        @PathVariable provider: SocialMember.OAuth2Provider,
-        @RequestParam(name = "code")
-        authorizationCode: String
-    ): String {
-        return oAuth2LoginService.login(provider, authorizationCode)
+	//2. AuthorizationCode를 이용해 사용자 인증을 처리해 주는 API
+	@GetMapping("/oauth2/callback/{provider}")
+	fun callback(
+		@PathVariable provider: SocialMember.OAuth2Provider,
+		@RequestParam(name = "code")
+		authorizationCode: String
+	): String {
+		return oAuth2LoginService.login(provider, authorizationCode)
 
-    }
+	}
 }

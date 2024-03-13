@@ -1,7 +1,6 @@
 package com.blife.blife.domain.library.model
 
 import com.blife.blife.domain.library.enums.REGION
-import java.time.LocalDateTime
 
 class Library(
 	val memberId: Long,

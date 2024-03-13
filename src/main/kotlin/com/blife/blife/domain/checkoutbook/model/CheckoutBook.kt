@@ -8,33 +8,33 @@ import java.time.LocalDateTime
 
 @Entity
 class CheckoutBook(
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "libBook_id")
-    val libBook: LibBookEntity,
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "libBook_id")
+	val libBook: LibBookEntity,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    val member: Member,
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	val member: Member,
 
-    @Column(name = "returned")
-    var returned : Boolean,
+	@Column(name = "returned")
+	var returned: Boolean,
 
-    @Column(name = "checkout_time" , updatable = false)
-    var checkoutTime: LocalDateTime? =null,
+	@Column(name = "checkout_time", updatable = false)
+	var checkoutTime: LocalDateTime? = null,
 
-    @Column(name = "return_time")
-    var returnTime : LocalDateTime?,
+	@Column(name = "return_time")
+	var returnTime: LocalDateTime?,
 
-    @Column(name = "due_date")
-    val dueDate : LocalDate
+	@Column(name = "due_date")
+	val dueDate: LocalDate
 
-    ) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+) {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	val id: Long? = null
 
-    @PrePersist
-    fun onPrePersist() {
-        checkoutTime = LocalDateTime.now()
-    }
+	@PrePersist
+	fun onPrePersist() {
+		checkoutTime = LocalDateTime.now()
+	}
 }

@@ -32,6 +32,7 @@ spring:
             enable: true #반드시 필요 -> SSL 필요로 되어있으면
 
 
+
 oauth2:
   kakao:
     client_id: ${OAUTH2_KAKAO_CLIENT_ID}

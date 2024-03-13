@@ -18,7 +18,7 @@ class BookController(
 			.let { BookResponse.from(it) }
 			.let { ResponseEntity.status(HttpStatus.OK).body(it) }
 
-	@GetMapping("/{title}")
+	@GetMapping("/search/{title}")
 	fun searchBookByTitle(
 		@PathVariable title: String,
 		@RequestParam page: Int,

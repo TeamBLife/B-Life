@@ -10,13 +10,13 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableWebSecurity
 class SecurityConfig {
 
-    @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        return http
-            .httpBasic { it.disable() }
-            .formLogin { it.disable() }
-            .csrf { it.disable() }
-            .cors { it.disable() }
-            .build()
-    }
+	@Bean
+	fun filterChain(http: HttpSecurity): SecurityFilterChain {
+		return http
+			.httpBasic { it.disable() }
+			.formLogin { it.disable() }
+			.csrf { it.disable() }
+			.cors { it.disable() }
+			.build()
+	}
 }

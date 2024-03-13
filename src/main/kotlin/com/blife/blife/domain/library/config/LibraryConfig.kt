@@ -5,7 +5,6 @@ import com.blife.blife.domain.library.application.LibraryUseCase
 import com.blife.blife.domain.library.service.LibraryService
 import com.blife.blife.infra.external.booksearchapi.client.KakaoBookSearchClient
 import com.blife.blife.infra.external.libapi.Data4libClient
-import com.blife.blife.infra.store.filestore.IFileStore
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

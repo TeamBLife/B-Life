@@ -6,7 +6,9 @@ import com.blife.blife.domain.book.repository.LibraryRepository
 import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
+import com.blife.blife.domain.mail.service.MailService
 import com.blife.blife.domain.member.repository.MemberRepository
+import com.blife.blife.domain.member.service.MemberService
 import com.blife.blife.domain.review.service.LibBookRepository
 import com.blife.blife.domain.wishlist.repository.WishListRepository
 import jakarta.mail.internet.MimeMessage
@@ -144,7 +146,7 @@ class CheckoutService(
             val helper = MimeMessageHelper(mimeMessage, "utf-8")
             helper.setTo(email)
             helper.setSubject(subject)
-            helper.setText(text, false) // true to activate multipart
+            helper.setText(text, true) // true to activate multipart
 
             javaMailSender.send(mimeMessage)
         }

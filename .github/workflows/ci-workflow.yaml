@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - "dev"
+    tags:
+      - "Feat/**"
+      - "Bugfix/**"
+      - "Refac/**"
+      - "Test/**"
+  push:
+    tags:
+      - "Feat/**"
+      - "Bugfix/**"
+      - "Refac/**"
+      - "Test/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > ./src/main/resources/.env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      - name: Install java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Gradle Permission
+        run: chmod +x gradlew
+
+      - name: Gradle build
+        run: ./gradlew build -x test
+
+      - name: Test
+        run: ./gradlew test -Dspring.profiles.active=dev
+
+      - name: 테스트 결과 PR 등록
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ always() }}
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
+

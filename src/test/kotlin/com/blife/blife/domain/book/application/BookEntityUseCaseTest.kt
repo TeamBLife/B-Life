@@ -2,8 +2,10 @@ package com.blife.blife.domain.book.application
 
 import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.book.service.BookService
-import com.blife.blife.infra.external.booksearchapi.KakaoBookSearchClient
-import com.blife.blife.infra.external.booksearchapi.NaverBookSearchClient
+import com.blife.blife.domain.library.application.error.ExternalErrorCode
+import com.blife.blife.infra.external.booksearchapi.BookSearchService
+import com.blife.blife.infra.external.booksearchapi.client.KakaoBookSearchClient
+import com.blife.blife.infra.external.booksearchapi.client.NaverBookSearchClient
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringTestExtension
@@ -24,7 +26,14 @@ class BookEntityUseCaseTest : DescribeSpec({
 	val naverClient = mockk<NaverBookSearchClient>()
 	val bookService = mockk<BookService>()
 
-	val bookUseCase = BookUseCase(listOf(kakaoClient, naverClient), bookService)
+	val bookSearchService = BookSearchService(listOf(kakaoClient, naverClient), bookService)
+
+	val bookUseCase = BookUseCase(bookSearchService, bookService)
+
+	beforeContainer {
+		every { kakaoClient.getClintName() } returns "KAKAO"
+		every { naverClient.getClintName() } returns "NAVER"
+	}
 
 	afterContainer { clearMocks(kakaoClient, naverClient, bookService) }
 
@@ -45,10 +54,8 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("DB에 데이터가 없고 Kakao Api Service가 성공한다면") {
-			every { kakaoClient.getClintName() } returns "KAKAO"
-			every { naverClient.getClintName() } returns "NAVER"
 			every { bookService.getBookByIsbn(any()) } returns null
-			val response = Book(
+			val book = Book(
 				1,
 				1,
 				"image",
@@ -58,8 +65,8 @@ class BookEntityUseCaseTest : DescribeSpec({
 				LocalDateTime.now()
 			)
 
-			every { kakaoClient.searchBookDetailInfo(any()) } returns response
-			every { bookService.addBook(any()) } returns response
+			every { kakaoClient.searchBookDetailInfo(any()) } returns Pair(book, null)
+			every { bookService.addBook(any()) } returns book
 
 			it("Kakao에서 데이터를 가지고 오고 데이터를 DB에 저장시킨다.") {
 				bookUseCase.searchDetailBookInfo(1).title shouldBe "Kakao Data"
@@ -67,11 +74,7 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("DB에 데이터가 없고 Kakao Api Service가 실패한다면") {
-			every { kakaoClient.getClintName() } returns "KAKAO"
-			every { naverClient.getClintName() } returns "NAVER"
-			every { bookService.getBookByIsbn(any()) } returns null
-			every { kakaoClient.searchBookDetailInfo(any()) } returns null
-			every { naverClient.searchBookDetailInfo(any()) } returns Book(
+			val book = Book(
 				1,
 				1,
 				"image",
@@ -80,6 +83,10 @@ class BookEntityUseCaseTest : DescribeSpec({
 				"Naver Data",
 				LocalDateTime.now()
 			)
+			every { bookService.getBookByIsbn(any()) } returns null
+			every { kakaoClient.searchBookDetailInfo(any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { naverClient.searchBookDetailInfo(any()) } returns Pair(book, null)
+
 			it("Naver에서 데이터를 가지고 온다.") {
 				bookUseCase.searchDetailBookInfo(1).title shouldBe "Naver Data"
 			}
@@ -87,8 +94,8 @@ class BookEntityUseCaseTest : DescribeSpec({
 
 		context("어느곳에도 데이터가 없다면") {
 			every { bookService.getBookByIsbn(any()) } returns null
-			every { kakaoClient.searchBookDetailInfo(any()) } returns null
-			every { naverClient.searchBookDetailInfo(any()) } returns null
+			every { kakaoClient.searchBookDetailInfo(any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { naverClient.searchBookDetailInfo(any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
 			it("에러가 발생한다.") {
 				shouldThrow<NotImplementedError> { bookUseCase.searchDetailBookInfo(1) }
 			}
@@ -96,18 +103,24 @@ class BookEntityUseCaseTest : DescribeSpec({
 	}
 
 	describe("searchBookListByTitle") {
-		context("요청을 하고 문제가 없을 경우") {
-			every { kakaoClient.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
+		val generateBookListData: (title: String) -> List<Book> = { title ->
+			(1L .. 10L).map {
 				Book(
-					1,
-					1,
+					it,
+					it,
 					"image",
 					"image",
 					"description",
-					"Kakao Data",
+					title,
 					LocalDateTime.now()
 				)
 			}
+		}
+		context("요청을 하고 문제가 없을 경우") {
+			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(
+				generateBookListData("Kakao Data"),
+				null
+			)
 			it("Kakao에서 데이터를 가지고 온다.") {
 				bookUseCase.searchBookListByTitle("", 1).forEach {
 					it.title shouldBe "Kakao Data"
@@ -116,18 +129,11 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("Kakao에서 에러가 날 경우") {
-			every { kakaoClient.searchBookListByTitle(any(), any()) } returns null
-			every { naverClient.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
-				Book(
-					1,
-					1,
-					"image",
-					"image",
-					"description",
-					"Naver Data",
-					LocalDateTime.now()
-				)
-			}
+			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { naverClient.searchBookListByTitle(any(), any()) } returns Pair(
+				generateBookListData("Naver Data"),
+				null
+			)
 			it("Naver에서 데이터를 가지고 온다.") {
 				bookUseCase.searchBookListByTitle("", 1).forEach {
 					it.title shouldBe "Naver Data"
@@ -136,19 +142,9 @@ class BookEntityUseCaseTest : DescribeSpec({
 		}
 
 		context("External Api가 전부 에러가 날 경우") {
-			every { kakaoClient.searchBookListByTitle(any(), any()) } returns null
-			every { naverClient.searchBookListByTitle(any(), any()) } returns null
-			every { bookService.searchBookListByTitle(any(), any()) } returns (1 .. 10).map {
-				Book(
-					1,
-					1,
-					"image",
-					"image",
-					"description",
-					"DB Data",
-					LocalDateTime.now()
-				)
-			}
+			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { naverClient.searchBookListByTitle(any(), any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { bookService.searchBookListByTitle(any(), any()) } returns generateBookListData("DB Data")
 			it("DB에서 가져온다.") {
 				bookUseCase.searchBookListByTitle("", 1).forEach {
 					it.title shouldBe "DB Data"

@@ -1,7 +1,10 @@
-package com.blife.blife.infra.external.booksearchapi
+package com.blife.blife.infra.external.booksearchapi.client
 
 import com.blife.blife.domain.book.model.Book
+import com.blife.blife.domain.library.application.error.ExternalErrorCode
 import com.blife.blife.infra.external.booksearchapi.dto.naver.NaverBookSearchResponse
+import com.blife.blife.infra.external.error.ExternalErrorObject
+import com.blife.blife.infra.external.error.ExternalErrorUtil
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +18,7 @@ class NaverBookSearchClient(
 	private val clientId: String,
 	@Value("\${Naver_Client_Secret}")
 	private val clientSecret: String,
-) : IBookSearchClient {
+) : IBookSearchClient, ExternalErrorUtil() {
 
 	override fun getClintName() = "NAVER"
 
@@ -35,25 +38,32 @@ class NaverBookSearchClient(
 		}
 		.build()
 
-	override fun searchBookDetailInfo(isbn13: Long): Book? {
+
+	override fun searchBookDetailInfo(isbn13: Long): Pair<Book?, ExternalErrorCode?> {
+		val errorObject = ExternalErrorObject()
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
 					.queryParam("d_isbn", isbn13)
+					.queryParam("display", 1)
 					.build()
 			}
 			.retrieve()
+			.onStatus(HttpStatusCode::is4xxClientError, errorHandler(errorObject))
+			.onStatus(HttpStatusCode::is5xxServerError, errorHandler(errorObject))
 			.toEntity(NaverBookSearchResponse::class.java)
 
 		val resultData = responseEntity.body
 
+
 		return if (resultData != null && resultData.items.isNotEmpty())
-			resultData.items[0].convertToBook()
+			Pair(resultData.items[0].convertToBook(), null)
 		else
-			null
+			Pair(null, errorObject.errorCode)
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): List<Book>? {
+	override fun searchBookListByTitle(title: String, page: Int): Pair<List<Book>?, ExternalErrorCode?> {
+		val errorObject = ExternalErrorObject()
 		val responseEntity = restClient.get()
 			.uri { builder ->
 				builder
@@ -62,13 +72,15 @@ class NaverBookSearchClient(
 					.build()
 			}
 			.retrieve()
+			.onStatus(HttpStatusCode::is4xxClientError, errorHandler(errorObject))
+			.onStatus(HttpStatusCode::is5xxServerError, errorHandler(errorObject))
 			.toEntity(NaverBookSearchResponse::class.java)
 
 		val resultData = responseEntity.body
 
 		return if (resultData !== null && resultData.items.isNotEmpty())
-			resultData.items.map { it.convertToBook() }
+			Pair(resultData.items.map { it.convertToBook() }, null)
 		else
-			null
+			Pair(null, errorObject.errorCode)
 	}
 }

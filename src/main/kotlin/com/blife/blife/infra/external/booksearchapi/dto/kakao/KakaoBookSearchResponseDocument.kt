@@ -38,9 +38,10 @@ data class KakaoBookSearchResponseDocument(
 			.toLong()
 	}
 
-	private fun getIsbn13(): Long? {
+	private fun getIsbn13(): Long {
 		return this.isbn.split(" ")
 			.takeIf { it.size == 2 }
 			?.let { it[1].toLong() }
+			?: throw TODO("")
 	}
 }

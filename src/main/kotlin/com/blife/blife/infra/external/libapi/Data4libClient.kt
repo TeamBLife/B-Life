@@ -1,12 +1,18 @@
 package com.blife.blife.infra.external.libapi
 
+import com.blife.blife.domain.library.model.Library
+import com.blife.blife.infra.external.libapi.dto.Data4libBookResponse
+import com.blife.blife.infra.external.libapi.dto.lib.Data4libBookLibResponse
 import com.blife.blife.infra.external.libapi.dto.popular.Data4libBookPopularResponse
 import net.minidev.json.JSONObject
 import net.minidev.json.JSONValue
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatusCode
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.toEntity
 
+@Component
 class Data4libClient(
 	@Value("\${Data4Lib_Secret_Key}")
 	private val secretKey: String,
@@ -37,12 +43,33 @@ class Data4libClient(
 					.build()
 			}
 			.retrieve()
-			.toEntity(Data4libBookPopularResponse::class.java)
+			.toEntity<Data4libBookResponse<Data4libBookPopularResponse>>()
 
 		val result = responseEntity.body
 
 		return if (result != null && result.response.docs.isNotEmpty()) {
 			result.response.docs.map { it.doc.isbn13.toLong() }
+		} else null
+	}
+
+	fun getLibraryInfo(libId: Long, memberId: Long): Library? {
+		val responseEntity = restClient.get()
+			.uri { builder ->
+				builder.path("/libSrch")
+					.queryParam("authKey", secretKey)
+					.queryParam("libCode", libId)
+					.queryParam("pageNo", 1)
+					.queryParam("pageSize", 1)
+					.queryParam("format", "json")
+					.build()
+			}
+			.retrieve()
+			.toEntity<Data4libBookResponse<Data4libBookLibResponse>>()
+
+		val result = responseEntity.body
+
+		return if (result != null) {
+			result.response.libs[0].lib.convertToLibrary(memberId)
 		} else null
 	}
 }

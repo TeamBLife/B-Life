@@ -14,9 +14,9 @@ import org.springframework.web.client.RestClient
 
 @Component
 class NaverBookSearchClient(
-	@Value("\${Naver_Client_Id}")
+	@Value("\${external.naver.clientId}")
 	private val clientId: String,
-	@Value("\${Naver_Client_Secret}")
+	@Value("\${external.naver.clientSecret}")
 	private val clientSecret: String,
 ) : IBookSearchClient, ExternalErrorUtil() {
 

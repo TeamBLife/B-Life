@@ -18,7 +18,6 @@ class SocialMember(
 ){
 
 
-    
 enum class OAuth2Provider{
     KAKAO, NAVER
 }

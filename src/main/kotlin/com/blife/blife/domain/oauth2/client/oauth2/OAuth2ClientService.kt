@@ -18,4 +18,10 @@ class OAuth2ClientService(
         return clients.find{ it.supports(provider) }
             ?: throw RuntimeException("지원하지 않는 OAuth Provider 입니다")
     }
+
+    fun generateLoginPageUrl(provider: SocialMember.OAuth2Provider,): String? {
+        val client: OAuth2Client = this.selectClient(provider)
+        return client.generateLoginPageUrl()
+
+    }
 }

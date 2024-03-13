@@ -13,8 +13,8 @@ import org.springframework.web.client.body
 
 @Component
 class KakaoOAuth2Client(
-    @Value("24145d59fd63241d2791c882bee45c8a") val clientId: String,
-    @Value("http://localhost:8080/oauth2/kakao") val redirectUrl: String,
+    @Value("\${oauth2.kakao.client_id}") val clientId: String,
+    @Value("\${oauth2.kakao.redirect_url}") val redirectUrl: String,
     private val restClient: RestClient
 ): OAuth2Client {
     override fun generateLoginPageUrl(): String {
@@ -39,7 +39,7 @@ class KakaoOAuth2Client(
             .retrieve()
             .body<KakaoTokenResponse>()
             ?.accessToken
-            ?: throw RuntimeException("AccessToken 조회 실패")
+            ?: throw RuntimeException("카카오 AccessToken 조회 실패")
     }
 
     override fun retrieveUserInfo(accessToken: String): KakaoUserInfoResponse {
@@ -48,7 +48,7 @@ class KakaoOAuth2Client(
             .header("Authorization", "Bearer $accessToken")
             .retrieve()
             .body<KakaoUserInfoResponse>()
-            ?: throw RuntimeException("UserInfo 조회 실패")
+            ?: throw RuntimeException("카카오 UserInfo 조회 실패")
     }
 
     override fun supports(provider: SocialMember.OAuth2Provider): Boolean {

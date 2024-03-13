@@ -1,16 +1,14 @@
-package com.blife.blife.domain.mail.service
+package com.blife.blife.global.util.mail.service
 
 
 class MailServiceUtils {
 	companion object {
-		fun certificationNum(): String {
+		fun certificationNum(): Long {
 			val charset = ('0' .. '9')
 			val rangeRandom = List(6) { charset.random() }
 				.joinToString { "" }
 
-			return rangeRandom
+			return rangeRandom.toLong()
 		}
 	}
-
-
 }

@@ -1,4 +1,4 @@
-package com.blife.blife.domain.mail.service
+package com.blife.blife.global.util.mail.service
 
 
 import jakarta.mail.internet.MimeMessage

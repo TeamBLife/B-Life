@@ -4,7 +4,7 @@ package com.blife.blife.domain.checkoutbook.service
 import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
-import com.blife.blife.domain.mail.service.MailService
+import com.blife.blife.global.util.mail.service.MailService
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.wishlist.repository.WishListRepository
 import com.blife.blife.infra.postgresql.library.JpaLibBookRepository

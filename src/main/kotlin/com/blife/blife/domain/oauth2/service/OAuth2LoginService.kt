@@ -1,15 +1,16 @@
 package com.blife.blife.domain.oauth2.service
 
-import com.blife.blife.domain.oauth2.JwtHelper
+import com.blife.blife.domain.member.dto.response.MemberLoginResponse
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2ClientService
 import com.blife.blife.domain.oauth2.model.SocialMember
+import com.blife.blife.global.security.JwtPlugin
 import org.springframework.stereotype.Service
 
 @Service
 class OAuth2LoginService(
 	private val oAuth2ClientService: OAuth2ClientService,
 	private val socialMemberService: SocialMemberService,
-	private val jwtHelper: JwtHelper
+	private val jwtPlugin: JwtPlugin
 ) {
 	// 1. 인가코드 -> 엑세스 토큰 발급
 	// 2. 엑세스 토큰으로 사용자 정보 조회
@@ -17,9 +18,10 @@ class OAuth2LoginService(
 	// 3. 사용자 정보로 SocialMember 있으면 조회 없으면 회원가입
 	// 4. SocialMember 를 토대로 우리쪽 액세스 토큰 발급 후 응답
 
-	fun login(provider: SocialMember.OAuth2Provider, authorizationCode: String): String {
+	fun login(provider: SocialMember.OAuth2Provider, authorizationCode: String): MemberLoginResponse {
 		return oAuth2ClientService.login(provider, authorizationCode)
 			.let { socialMemberService.registerIfAbsent(it) }
-			.let { jwtHelper.generateAccessToken(it.id!!) }
+			.let { jwtPlugin.generateAccessToken(it.id!!.toString(), it.email, it.role.name) }
+			.let { MemberLoginResponse(it) }
 	}
 }

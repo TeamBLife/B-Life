@@ -14,7 +14,7 @@ import org.springframework.web.client.toEntity
 
 @Component
 class Data4libClient(
-	@Value("\${Data4Lib_Secret_Key}")
+	@Value("\${external.data4library.secretKey}")
 	private val secretKey: String,
 ) {
 

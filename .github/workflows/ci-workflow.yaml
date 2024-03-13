@@ -20,6 +20,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      pull-requests: write
+      checks: write
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -56,8 +61,8 @@ jobs:
         run: ./gradlew test -Dspring.profiles.active=dev
 
       - name: 테스트 결과 PR 등록
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: ${{ always() }}
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 

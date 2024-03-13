@@ -4,27 +4,25 @@ package com.blife.blife.domain.checkoutbook.service
 import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
+import com.blife.blife.domain.mail.service.MailService
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.wishlist.repository.WishListRepository
 import com.blife.blife.infra.postgresql.library.JpaLibBookRepository
 import com.blife.blife.infra.postgresql.library.JpaLibraryRepository
 import com.blife.blife.infra.postgresql.library.entity.LibBookEntity
-import jakarta.mail.internet.MimeMessage
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class CheckoutService(
-	private val checkoutRepository: CheckoutRepository,
-	private val libraryRepository: JpaLibraryRepository,
-	private val jpaLibBookRepository: JpaLibBookRepository,
-	private val memberRepository: MemberRepository,
-	private val wishListRepository: WishListRepository,
-	private val javaMailSender: JavaMailSender,
+    private val checkoutRepository: CheckoutRepository,
+    private val libraryRepository: JpaLibraryRepository,
+    private val jpaLibBookRepository: JpaLibBookRepository,
+    private val memberRepository: MemberRepository,
+    private val wishListRepository: WishListRepository,
+    private val mailService: MailService
 ) {
 
 	fun getBookCheckoutStatus(libBookId: Long): LibBookStatusResponse {
@@ -129,27 +127,16 @@ class CheckoutService(
 			dueDate = checkoutBook.dueDate
 		)
 
-	}
+    }
 
-	fun notifyAvailability(libBook: LibBookEntity) {
-		// 변경된 대출 정보의 책을 찜한 사용자 목록을 가져옵니다.
-		val wishLists = wishListRepository.findByLibBookId(libBook.id!!)
+    fun notifyAvailability(libBook: LibBookEntity) {
+        // 변경된 대출 정보의 책을 찜한 사용자 목록을 가져옵니다.
+        val wishLists = wishListRepository.findByLibBookId(libBook.id!!)
 
-		for (wishList in wishLists) {
-			sendMail(wishList.member.email, libBook)
-		}
-	}
-
-
-	private fun sendMail(email: String, libBook: LibBookEntity) {
-		val subject = "도서 대출 알림"
-		val text = " 안녕하세요, ${libBook.book.bookName} (가)이 반납이 되어 대출가능합니다. 관심이 있으셨던 책을 대출하세요. "
-		val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
-		val helper = MimeMessageHelper(mimeMessage, "utf-8")
-		helper.setTo(email)
-		helper.setSubject(subject)
-		helper.setText(text, true) // true to activate multipart
-
-		javaMailSender.send(mimeMessage)
-	}
+        for (wishList in wishLists) {
+            val subject = "도서 대출 알림"
+            val text = " 안녕하세요, ${libBook.book.bookName} (가)이 반납이 되어 대출가능합니다. 관심이 있으셨던 책을 대출하세요. "
+            mailService.sendMail(wishList.member.email, subject, text, true)
+        }
+    }
 }

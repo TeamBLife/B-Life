@@ -29,22 +29,23 @@ class NaverOAuth2Client(
 			.toString()
 	}
 
-	override fun getAccessToken(authorizationCode: String): String {
-		val requestData = mutableMapOf(
-			"grant_type" to "authorization_code",
-			"client_id" to clientId,
-			"client_secret" to clientSecret,
-			"code" to authorizationCode
-		)
-		return restClient.post()
-			.uri("$NAVER_API_BASE_URL/token")
-			.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-			.body(LinkedMultiValueMap<String, String>().apply { this.setAll(requestData) })
-			.retrieve()
-			.body<NaverTokenResponse>()
-			?.accessToken
-			?: throw RuntimeException("네이버 AccessToken 조회 실패")
-	}
+    override fun getAccessToken(authorizationCode: String): String {
+        val requestData = mutableMapOf(
+            "grant_type" to "authorization_code",
+            "client_id" to clientId,
+            "client_secret" to clientSecret,
+            "code" to authorizationCode,
+            "state" to "실패"
+        )
+        return restClient.post()
+            .uri("$NAVER_API_BASE_URL/token")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(LinkedMultiValueMap<String,String>().apply { this.setAll(requestData) })
+            .retrieve()
+            .body<NaverTokenResponse>()
+            ?.accessToken
+            ?: throw RuntimeException("네이버 AccessToken 조회 실패")
+    }
 
 	override fun retrieveUserInfo(accessToken: String): OAuth2LoginUserInfo {
 		return restClient.post()

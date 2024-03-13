@@ -11,7 +11,7 @@ class QueryDslBookRepository : QueryDslSupport() {
 
 	private val book = QBookEntity.bookEntity
 
-	fun searchBookBy(title: String, page: Int): List<BookEntity> =
+	fun searchBookBy(title: String, page: Long): List<BookEntity> =
 		queryFactory
 			.selectFrom(book)
 			.where(
@@ -19,7 +19,7 @@ class QueryDslBookRepository : QueryDslSupport() {
 					.or(book.bookName.contains(title))
 			)
 			.limit(10.toLong())
-			.offset(((page - 1) * 10).toLong())
+			.offset(((page - 1) * 10))
 			.fetch()
 			.toList()
 }

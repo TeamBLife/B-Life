@@ -62,7 +62,7 @@ class NaverBookSearchClient(
 			Pair(null, errorObject.errorCode)
 	}
 
-	override fun searchBookListByTitle(title: String, page: Int): Pair<List<Book>?, ExternalErrorCode?> {
+	override fun searchBookListByTitle(title: String, page: Long): Pair<List<Book>?, ExternalErrorCode?> {
 		val errorObject = ExternalErrorObject()
 		val responseEntity = restClient.get()
 			.uri { builder ->

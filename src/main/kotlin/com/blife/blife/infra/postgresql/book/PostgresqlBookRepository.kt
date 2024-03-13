@@ -17,7 +17,7 @@ class PostgresqlBookRepository(
 			.let { toBook(it) }
 
 
-	override fun searchBookByTitle(title: String, page: Int): List<Book> =
+	override fun searchBookByTitle(title: String, page: Long): List<Book> =
 		queryDslBookRepository.searchBookBy(title, page).map { toBook(it) }
 
 	override fun getBookByIsbn13(isbn13: Long): Book? =

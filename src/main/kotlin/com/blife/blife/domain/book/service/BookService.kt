@@ -14,6 +14,6 @@ class BookService(
 	fun addBook(book: Book): Book =
 		bookRepository.saveBook(book)
 
-	fun searchBookListByTitle(title: String, page: Int): List<Book> =
+	fun searchBookListByTitle(title: String, page: Long): List<Book> =
 		bookRepository.searchBookByTitle(title, page)
 }

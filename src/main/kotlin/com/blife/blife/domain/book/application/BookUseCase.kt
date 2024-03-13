@@ -30,7 +30,7 @@ class BookUseCase(
 	}
 
 
-	fun searchBookListByTitle(title: String, page: Int): List<Book> {
+	fun searchBookListByTitle(title: String, page: Long): List<Book> {
 		var result: List<Book>? = bookSearchService.searchBookListByTitle(title, page)
 
 		if (result == null) result = bookService.searchBookListByTitle(title, page)

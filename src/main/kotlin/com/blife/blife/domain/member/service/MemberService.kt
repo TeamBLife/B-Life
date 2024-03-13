@@ -1,7 +1,6 @@
 package com.blife.blife.domain.member.service
 
 import com.blife.blife.domain.member.dto.request.MemberLoginRequest
-import com.blife.blife.domain.member.dto.request.MemberOwnerSignupRequest
 import com.blife.blife.domain.member.dto.request.MemberSignupRequest
 import com.blife.blife.domain.member.dto.response.MemberLoginResponse
 import com.blife.blife.domain.member.dto.response.MemberResponse
@@ -28,14 +27,14 @@ class MemberService(
 	private val jwtPlugin: JwtPlugin
 ) {
 	@Transactional
-	fun signup(request: MemberSignupRequest): MemberResponse {
+	fun signup(request: MemberSignupRequest, role: MemberRole): MemberResponse {
 		memberRepository.findByEmail(request.email)?.let { throw TODO("이미 가입되어 있는 Email") }
 		return memberRepository.save(
 			Member(
 				email = request.email,
 				name = request.name,
 				password = passwordEncoder.encode(request.password),
-				role = MemberRole.USER
+				role = role
 			)
 		)
 			.also { member ->
@@ -64,17 +63,6 @@ class MemberService(
 				role = user.role.name
 			)
 		)
-	}
-
-	fun ownerSignup(request: MemberOwnerSignupRequest): MemberResponse {
-		return memberRepository.save(
-			Member(
-				email = request.email,
-				name = request.name,
-				password = passwordEncoder.encode(request.password),
-				role = MemberRole.OWNER
-			)
-		).let { MemberResponse(it.role, it.name, it.email) }
 	}
 
 	fun signout(id: Long) {

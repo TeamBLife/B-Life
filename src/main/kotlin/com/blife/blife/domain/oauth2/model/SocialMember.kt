@@ -1,5 +1,6 @@
 package com.blife.blife.domain.oauth2.model
 
+import com.blife.blife.domain.member.enums.MemberRole
 import jakarta.persistence.*
 
 @Entity
@@ -13,8 +14,8 @@ class SocialMember(
 	val provider: OAuth2Provider,
 	val providerId: String,
 	val nickname: String,
-	val email: String
-
+	val email: String,
+	val role: MemberRole,
 ) {
 
 

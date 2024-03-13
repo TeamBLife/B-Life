@@ -7,7 +7,7 @@ spring:
     group:
       local:
         - db-local
-      test:
+      dev:
         - db-dev
       prod:
         - db-prod
@@ -40,7 +40,7 @@ oauth2:
   naver:
     client_id: ${OAUTH2_NAVER_CLIENT_ID}
     client_secret: ${OAUTH2_NAVER_CLIENT_SECRET}
-    redirect_url: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/naver)
+    redirect_url: "http://localhost:8080/oauth2/naver"
 
 
 

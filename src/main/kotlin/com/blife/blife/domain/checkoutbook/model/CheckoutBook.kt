@@ -1,7 +1,7 @@
 package com.blife.blife.domain.checkoutbook.model
 
-import com.blife.blife.domain.book.model.LibBook
 import com.blife.blife.domain.member.model.Member
+import com.blife.blife.infra.postgresql.library.entity.LibBookEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class CheckoutBook(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "libBook_id")
-    val libBook: LibBook,
+    val libBook: LibBookEntity,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

@@ -31,18 +31,20 @@ class CheckoutService(
         val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
-       return if (unreturnedBookCount >= libBook.totalBookCount) {
+        return if (unreturnedBookCount >= libBook.totalBookCount) {
             LibBookStatusResponse(
                 libBookName = libBook.book.bookName,
                 bookQuantity = libBook.totalBookCount,
                 checkoutCount = unreturnedBookCount,
-                loanAvailable =  false)
+                loanAvailable = false
+            )
         } else {
-             LibBookStatusResponse(
+            LibBookStatusResponse(
                 libBookName = libBook.book.bookName,
                 bookQuantity = libBook.totalBookCount,
                 checkoutCount = unreturnedBookCount,
-                loanAvailable =  true)
+                loanAvailable = true
+            )
         }
     }
 
@@ -54,6 +56,7 @@ class CheckoutService(
         val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("libBook")
         val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
         val library = libBook.lib
+        val possibleBookQuantity = 3
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
         if (unreturnedBookCount >= libBook.totalBookCount) {
@@ -63,7 +66,7 @@ class CheckoutService(
 
         // 책을 3권만 빌릴 수 있는 로직이 필요
         val currentLoans = checkoutRepository.countByMemberIdAndReturnedFalse(request.memberId)
-        if (currentLoans >= 3) {
+        if (currentLoans >= possibleBookQuantity) {
             throw IllegalStateException("최대 대여 가능한 책의 수를 초과하였습니다.")
         }
 
@@ -146,6 +149,6 @@ class CheckoutService(
             helper.setSubject(subject)
             helper.setText(text, true) // true to activate multipart
 
-            javaMailSender.send(mimeMessage)
-        }
+        javaMailSender.send(mimeMessage)
+    }
 }

@@ -5,23 +5,22 @@ import org.springframework.stereotype.Component
 
 @Component
 class OAuth2ClientService(
-    private val clients: List<OAuth2Client>
+	private val clients: List<OAuth2Client>
 ) {
 
-    fun login(provider: SocialMember.OAuth2Provider, authorizationCode: String): OAuth2LoginUserInfo {
-        val client: OAuth2Client = this.selectClient(provider)
-        return client.getAccessToken(authorizationCode)
-            .let{ client.retrieveUserInfo(it) }
-    }
+	fun login(provider: SocialMember.OAuth2Provider, authorizationCode: String): OAuth2LoginUserInfo {
+		val client: OAuth2Client = this.selectClient(provider)
+		return client.getAccessToken(authorizationCode)
+			.let { client.retrieveUserInfo(it) }
+	}
 
-    private fun selectClient(provider: SocialMember.OAuth2Provider): OAuth2Client {
-        return clients.find{ it.supports(provider) }
-            ?: throw RuntimeException("지원하지 않는 OAuth Provider 입니다")
-    }
+	private fun selectClient(provider: SocialMember.OAuth2Provider): OAuth2Client {
+		return clients.find { it.supports(provider) }
+			?: throw RuntimeException("지원하지 않는 OAuth Provider 입니다")
+	}
 
-    fun generateLoginPageUrl(provider: SocialMember.OAuth2Provider,): String? {
-        val client: OAuth2Client = this.selectClient(provider)
-        return client.generateLoginPageUrl()
-
-    }
+	fun generateLoginPageUrl(provider: SocialMember.OAuth2Provider): String? {
+		val client: OAuth2Client = this.selectClient(provider)
+		return client.generateLoginPageUrl()
+	}
 }

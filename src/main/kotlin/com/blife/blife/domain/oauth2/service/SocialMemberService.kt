@@ -1,5 +1,6 @@
 package com.blife.blife.domain.oauth2.service
 
+import com.blife.blife.domain.member.enums.MemberRole
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2LoginUserInfo
 import com.blife.blife.domain.oauth2.model.SocialMember
 import com.blife.blife.domain.oauth2.repository.SocialMemberRepository
@@ -15,7 +16,8 @@ class SocialMemberService(
 				provider = userInfo.provider,
 				providerId = userInfo.id,
 				nickname = userInfo.nickname,
-				email = userInfo.email
+				email = userInfo.email,
+				role = MemberRole.USER
 			)
 			socialMemberRepository.save(socialMember)
 		} else {

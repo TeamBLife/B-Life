@@ -1,5 +1,6 @@
 package com.blife.blife.domain.oauth2.controller
 
+import com.blife.blife.domain.member.dto.response.MemberLoginResponse
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2ClientService
 import com.blife.blife.domain.oauth2.model.SocialMember
 import com.blife.blife.domain.oauth2.service.OAuth2LoginService
@@ -31,7 +32,7 @@ class OAuth2LoginController(
 		@PathVariable provider: SocialMember.OAuth2Provider,
 		@RequestParam(name = "code")
 		authorizationCode: String
-	): String {
+	): MemberLoginResponse {
 		return oAuth2LoginService.login(provider, authorizationCode)
 
 	}

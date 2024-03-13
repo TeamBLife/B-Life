@@ -1,15 +1,15 @@
 package com.blife.blife.domain.review.model
 
-import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.review.dto.BookReviewResponse
+import com.blife.blife.infra.postgresql.book.entity.BookEntity
 import jakarta.persistence.*
 
 @Entity(name = "bookReview")
 class BookReview (
     @ManyToOne
-    @Column(name = "book_id")
-    var book: Book,
+    @JoinColumn(name = "book_id")
+    var book: BookEntity,
 
     @Column(name = "point")
     var point : Float,
@@ -18,7 +18,7 @@ class BookReview (
     var comment : String,
 
     @ManyToOne
-    @Column(name = "member_id")
+    @JoinColumn(name = "member_id")
     val member : Member,
 ){
     @Id

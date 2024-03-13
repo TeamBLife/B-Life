@@ -1,5 +1,6 @@
 package com.blife.blife.domain.review.controller
 
+import com.blife.blife.domain.review.dto.AverageScoreDto
 import com.blife.blife.domain.review.dto.LibBookReviewRequest
 import com.blife.blife.domain.review.dto.LibBookReviewResponse
 import com.blife.blife.domain.review.service.LibBookReviewService
@@ -20,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/libbookreviews")
 class LibBookReviewController(
     private val libBookReviewService: LibBookReviewService,
 ) {
 
     @Operation(summary = "도서관내 책 리뷰 조회")
-    @GetMapping("/libBook/{libBookId}")
+    @GetMapping("/libbooks/{libBookId}")
     fun getBookReviewListInLib(
         @PathVariable libBookId: Long,
         @PageableDefault pageable: Pageable,
@@ -34,8 +35,17 @@ class LibBookReviewController(
         return ResponseEntity.status(HttpStatus.OK).body(libBookReviewService.getReviewListByLibBookId(libBookId, pageable))
     }
 
+    @Operation(summary = "책 평점")
+    @GetMapping("/libbooks/{libBookReviewId}/point")
+    fun getAverage(
+        @PathVariable libBookReviewId: Long,
+    ): ResponseEntity<AverageScoreDto>{
+        return ResponseEntity.status(HttpStatus.OK).body(libBookReviewService.getAverage(libBookReviewId))
+    }
+
+
     @Operation(summary = "책 단일리뷰 조회")
-    @GetMapping("/libBook/{libBookReviewId}")
+    @GetMapping("/libbooks/{libBookReviewId}")
     fun getBookReviewInLib(
         @PathVariable libBookReviewId: Long,
     ): ResponseEntity<LibBookReviewResponse> {
@@ -44,7 +54,7 @@ class LibBookReviewController(
 
 
     @Operation(summary = "도서관내 책 리뷰 생성")
-    @PostMapping("/libBook/{libBookId}")
+    @PostMapping("/libbooks/{libBookId}")
     fun createBookReviewInLib(
         @PathVariable libBookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
@@ -57,7 +67,7 @@ class LibBookReviewController(
 
 
     @Operation(summary = "도서관내 책 리뷰 수정")
-    @PatchMapping("/libBook/{libBookReviewId}")
+    @PatchMapping("/{libBookReviewId}")
     fun updateBookReviewInLib(
         @PathVariable libBookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
@@ -70,7 +80,7 @@ class LibBookReviewController(
 
 
     @Operation(summary = "도서관 내 책 리뷰 삭제")
-    @DeleteMapping("/libBook/{libBookReviewId}")
+    @DeleteMapping("/{libBookReviewId}")
     fun deleteLibBookReview(
         @PathVariable libBookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,

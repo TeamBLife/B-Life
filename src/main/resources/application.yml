@@ -1,24 +1,22 @@
-auth:
-  jwt:
-    issuer: team.sparta.com
-    secret: ${Jwt_Secret}
-    accessTokenExpirationHour: 168
-
-external:
-  data4library:
-    secretKey: ${Data4Lib_Secret_Key}
-  kakao:
-    restApiKey: ${Kakao_RestApi_Key}
-  naver:
-    clientId: ${Naver_Client_Id}
-    clientSecret: ${Naver_Client_Secret}
-
 spring:
+  profiles:
+    active:
+      - local
+    include:
+      - db
+    group:
+      local:
+        - db-local
+      test:
+        - db-dev
+      prod:
+        - db-prod
+
   mail:
     host: smtp.naver.com #smtp
     port: 465
-    username: ${Naver_Username}
-    password: ${Naver_Password}
+    username: ${NAVER_USERNAME}
+    password: ${NAVER_PASSWORD}
     properties:
       mail:
         smtp:
@@ -61,3 +59,21 @@ oauth2:
     client-id: 3sEqGbtQWik2xYCDa5mZ
     client-secret: ${Naver_Client_Secret}
     redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/naver)
+
+
+
+auth:
+  jwt:
+    issuer: team.sparta.com
+    secret: ${JWT_SECRET}
+    accessTokenExpirationHour: 168
+
+external:
+  data4library:
+    secretKey: ${DATA4LIB_SECRET_KEY}
+  kakao:
+    restApiKey: ${KAKAO_RESTAPI_KEY}
+  naver:
+    clientId: ${NAVER_CLIENT_ID}
+    clientSecret: ${NAVER_CLIENT_SECRET}
+

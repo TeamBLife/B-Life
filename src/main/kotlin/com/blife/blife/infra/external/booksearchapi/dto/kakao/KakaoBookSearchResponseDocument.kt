@@ -27,8 +27,21 @@ data class KakaoBookSearchResponseDocument(
 		description = contents,
 		author = authors.joinToString(","),
 		coverUrl = thumbnail,
-		isbn10 = isbn.let { it.split(" ")[0].filter { item -> item.isDigit() }.toLong() },
-		isbn13 = isbn.let { it.split(" ").let { split -> if (split.size == 2) split[1].toLong() else null } },
+		isbn10 = getIsbn10(),
+		isbn13 = getIsbn13(),
 		publicationDate = datetime
 	)
+
+	private fun getIsbn10(): Long {
+		return this.isbn.split(" ")[0]
+			.filter { it.isDigit() }
+			.toLong()
+	}
+
+	private fun getIsbn13(): Long {
+		return this.isbn.split(" ")
+			.takeIf { it.size == 2 }
+			?.let { it[1].toLong() }
+			?: throw TODO("")
+	}
 }

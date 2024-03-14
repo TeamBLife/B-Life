@@ -9,5 +9,5 @@ interface IBookSearchClient {
 
 	fun searchBookDetailInfo(isbn13: Long): Pair<Book?, ExternalErrorCode?>
 
-	fun searchBookListByTitle(title: String, page: Int): Pair<List<Book>?, ExternalErrorCode?>
+	fun searchBookListByTitle(title: String, page: Long): Pair<List<Book>?, ExternalErrorCode?>
 }

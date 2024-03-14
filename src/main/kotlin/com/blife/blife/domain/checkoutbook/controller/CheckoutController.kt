@@ -20,7 +20,7 @@ class CheckoutController(private val checkoutService: CheckoutService) {
 		@PathVariable libBookId: Long
 	): ResponseEntity<LibBookStatusResponse> {
 		checkoutService.getBookCheckoutStatus(libBookId)
-		return ResponseEntity.status(HttpStatus.OK).build()
+		return ResponseEntity.status(HttpStatus.OK).body(checkoutService.getBookCheckoutStatus(libBookId))
 	}
 
 
@@ -33,7 +33,7 @@ class CheckoutController(private val checkoutService: CheckoutService) {
 	): ResponseEntity<CheckoutResponse> {
 		val ownerId = userPrincipal.id
 		checkoutService.createCheckout(ownerId, checkoutRequest)
-		return ResponseEntity.status(HttpStatus.CREATED).build()
+		return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckout(ownerId, checkoutRequest))
 	}
 
 	@Operation(summary = "책 반납")
@@ -45,7 +45,7 @@ class CheckoutController(private val checkoutService: CheckoutService) {
 	): ResponseEntity<ReturnBookResponse> {
 		val ownerId = userPrincipal.id
 		checkoutService.returnBook(ownerId, returnBookRequest)
-		return ResponseEntity.status(HttpStatus.OK).build()
+		return ResponseEntity.status(HttpStatus.OK).body(checkoutService.returnBook(ownerId,returnBookRequest))
 	}
 
 }

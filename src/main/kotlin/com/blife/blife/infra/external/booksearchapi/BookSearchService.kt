@@ -25,7 +25,7 @@ class BookSearchService(
 		return null
 	}
 
-	fun searchBookListByTitle(title: String, page: Int): List<Book>? {
+	fun searchBookListByTitle(title: String, page: Long): List<Book>? {
 		for (client in bookSearchClients) {
 			client.searchBookListByTitle(title, page).let {
 				if (it.first != null) return it.first

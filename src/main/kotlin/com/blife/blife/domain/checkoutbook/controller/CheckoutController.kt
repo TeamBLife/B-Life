@@ -23,12 +23,24 @@ class CheckoutController(private val checkoutService: CheckoutService) {
     @Operation(summary = "책 대여가능 조회")
     @GetMapping("/{libBookId}")
     fun getBookCheckoutStatus(
-        @PathVariable libBookId : Long):
-            ResponseEntity<LibBookStatusResponse>{
+        @PathVariable libBookId: Long,
+    ):
+            ResponseEntity<LibBookStatusResponse> {
         checkoutService.getBookCheckoutStatus(libBookId)
         return ResponseEntity.status(HttpStatus.OK).build()
     }
 
+//    @Operation(summary = "책 대여 예약")
+//    @PreAuthorize("hasRole('MEMBER')")
+//    @PostMapping()
+//    fun reservationBook(
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+//        @RequestBody reservationRequest: ReservationRequest,
+//    ): ResponseEntity<List<CheckoutResponse>> {
+//        val userId = userPrincipal.id
+//        checkoutService.reservationBook(userId, reservationRequest)
+//        return ResponseEntity.status(HttpStatus.CREATED).build()
+//    }
 
     @Operation(summary = "책 대여")
     @PreAuthorize("hasRole('OWNER')")

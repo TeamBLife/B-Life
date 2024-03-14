@@ -37,10 +37,6 @@ class LibBookReviewService(
 		}
 	}
 
-	fun getBookReviewInLib(libBookReviewId: Long): LibBookReviewResponse {
-		val review = libBookReviewRepository.findByIdOrNull(libBookReviewId) ?: throw IllegalArgumentException("review")
-		return review.toLibBookResponse()
-	}
 
 	@Transactional
 	fun createBookReviewInLib(libBookId: Long, userId: Long, request: LibBookReviewRequest): LibBookReviewResponse {

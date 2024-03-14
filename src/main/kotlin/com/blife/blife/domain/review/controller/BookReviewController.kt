@@ -23,6 +23,7 @@ class BookReviewController (
     @GetMapping("/books/{bookId}")
     fun getBookReviewList(
         @PathVariable bookId: Long,
+        @RequestParam page :Long,
         @PageableDefault pageable: Pageable,
     ): ResponseEntity<Page<BookReviewResponse>> {
         return ResponseEntity.status(HttpStatus.OK).body(bookReviewService.getReviewListByBookId(bookId, pageable))
@@ -36,20 +37,13 @@ class BookReviewController (
         return ResponseEntity.status(HttpStatus.OK).body(bookReviewService.getAverage(bookId))
     }
 
-    @Operation(summary = "책 단일리뷰 조회")
-    @GetMapping("/books/{bookReviewId}")
-    fun getBookReview(
-        @PathVariable bookReviewId: Long,
-    ): ResponseEntity<BookReviewResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(bookReviewService.getReviewByBookId(bookReviewId))
-    }
 
     @Operation(summary = "책 리뷰 생성")
     @PostMapping("/books/{bookId}")
     fun createBookReview(
         @PathVariable bookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        bookReviewRequest: BookReviewRequest,
+        @RequestBody bookReviewRequest: BookReviewRequest,
     ): ResponseEntity<BookReviewResponse> {
         val userId = userPrincipal.id
         bookReviewService.createBookReview(bookId, userId, bookReviewRequest)
@@ -62,7 +56,7 @@ class BookReviewController (
     fun updateBookReview(
         @PathVariable bookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        bookReviewRequest: BookReviewRequest,
+        @RequestBody bookReviewRequest: BookReviewRequest,
     ): ResponseEntity<BookReviewResponse> {
         val userId = userPrincipal.id
         bookReviewService.updateBookReview(bookReviewId, userId, bookReviewRequest)

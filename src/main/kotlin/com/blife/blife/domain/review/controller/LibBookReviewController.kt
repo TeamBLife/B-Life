@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -44,21 +45,12 @@ class LibBookReviewController(
     }
 
 
-    @Operation(summary = "책 단일리뷰 조회")
-    @GetMapping("/libbooks/{libBookReviewId}")
-    fun getBookReviewInLib(
-        @PathVariable libBookReviewId: Long,
-    ): ResponseEntity<LibBookReviewResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(libBookReviewService.getBookReviewInLib(libBookReviewId))
-    }
-
-
     @Operation(summary = "도서관내 책 리뷰 생성")
     @PostMapping("/libbooks/{libBookId}")
     fun createBookReviewInLib(
         @PathVariable libBookId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        libBookReviewRequest: LibBookReviewRequest,
+        @RequestBody libBookReviewRequest: LibBookReviewRequest,
     ): ResponseEntity<LibBookReviewResponse> {
         val userId = userPrincipal.id
         libBookReviewService.createBookReviewInLib(libBookId, userId, libBookReviewRequest)
@@ -71,7 +63,7 @@ class LibBookReviewController(
     fun updateBookReviewInLib(
         @PathVariable libBookReviewId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        libBookReviewRequest: LibBookReviewRequest,
+        @RequestBody libBookReviewRequest: LibBookReviewRequest,
     ): ResponseEntity<LibBookReviewResponse> {
         val userId = userPrincipal.id
         libBookReviewService.updateBookReviewInLib(libBookReviewId, userId, libBookReviewRequest)

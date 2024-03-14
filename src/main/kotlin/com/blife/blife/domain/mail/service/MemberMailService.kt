@@ -10,16 +10,17 @@ import org.springframework.stereotype.Service
 
 @Service
 class MemberMailService(
-    private val javaMailSender: JavaMailSender,
+    private val emailService: EmailService,
     private val redisUtils: RedisUtils,
 ) {
 
 
     fun sendMail(email: String) {
         val certificationNumber: String = MailServiceUtils.certificationNum()
-        val message = getMailMessage(email, certificationNumber)
+        val subject = "[hannah-education] 본인 인증 메일"
+        val text = getText(certificationNumber)
         redisUtils.setDataExpire(certificationNumber, email)
-        javaMailSender.send(message)
+        emailService.sendMail(email, subject, text, true)
     }
 
     fun checkCertification(certificationNumber: String) {
@@ -28,13 +29,6 @@ class MemberMailService(
         redisUtils.deleteData(certificationNumber)
     }
 
-    private fun getMailMessage(email: String, certificationNumber: String): MimeMessage {
-        val message = javaMailSender.createMimeMessage()
-        message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
-        message.subject = "[hannah-education] 본인 인증 메일"
-        message.setText(getText(certificationNumber), "UTF-8", "html")
-        return message
-    }
 
 
     private fun getText(certificationNum: String): String {

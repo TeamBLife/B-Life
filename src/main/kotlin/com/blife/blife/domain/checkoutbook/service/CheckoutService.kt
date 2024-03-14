@@ -4,6 +4,7 @@ package com.blife.blife.domain.checkoutbook.service
 import com.blife.blife.domain.checkoutbook.dto.*
 import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
+import com.blife.blife.domain.mail.service.EmailService
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.wishlist.repository.WishListRepository
 import com.blife.blife.infra.postgresql.library.JpaLibBookRepository
@@ -24,7 +25,7 @@ class CheckoutService(
     private val jpaLibBookRepository: JpaLibBookRepository,
     private val memberRepository: MemberRepository,
     private val wishListRepository: WishListRepository,
-    private val javaMailSender: JavaMailSender,
+    private val emailService: EmailService,
 ) {
 
     fun getBookCheckoutStatus(libBookId: Long): LibBookStatusResponse {
@@ -130,25 +131,16 @@ class CheckoutService(
         )
 
     }
-        fun notifyAvailability(libBook:LibBookEntity) {
-            // 변경된 대출 정보의 책을 찜한 사용자 목록을 가져옵니다.
-            val wishLists = wishListRepository.findByLibBookId(libBook.id!!)
 
-            for (wishList in wishLists) {
-                sendMail(wishList.member.email, libBook)
-            }
-        }
+    fun notifyAvailability(libBook: LibBookEntity) {
+        // 변경된 대출 정보의 책을 찜한 사용자 목록을 가져옵니다.
+        val wishLists = wishListRepository.findByLibBookId(libBook.id!!)
 
-
-        private fun sendMail(email: String, libBook: LibBookEntity) {
+        for (wishList in wishLists) {
             val subject = "도서 대출 알림"
             val text = " 안녕하세요, ${libBook.book.bookName} (가)이 반납이 되어 대출가능합니다. 관심이 있으셨던 책을 대출하세요. "
-            val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
-            val helper = MimeMessageHelper(mimeMessage, "utf-8")
-            helper.setTo(email)
-            helper.setSubject(subject)
-            helper.setText(text, true) // true to activate multipart
-
-        javaMailSender.send(mimeMessage)
+            emailService.sendMail(wishList.member.email, subject, text, true)
+        }
     }
+
 }

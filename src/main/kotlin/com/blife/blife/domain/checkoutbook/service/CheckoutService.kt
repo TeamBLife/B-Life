@@ -6,6 +6,7 @@ import com.blife.blife.domain.checkoutbook.model.CheckoutBook
 import com.blife.blife.domain.checkoutbook.repository.CheckoutRepository
 import com.blife.blife.global.util.mail.service.MailService
 import com.blife.blife.domain.member.repository.MemberRepository
+import com.blife.blife.domain.review.dto.BookReservationRequest
 import com.blife.blife.domain.wishlist.repository.WishListRepository
 import com.blife.blife.infra.postgresql.library.JpaLibBookRepository
 import com.blife.blife.infra.postgresql.library.JpaLibraryRepository
@@ -17,12 +18,12 @@ import java.time.LocalDateTime
 
 @Service
 class CheckoutService(
-	private val checkoutRepository: CheckoutRepository,
-	private val libraryRepository: JpaLibraryRepository,
-	private val jpaLibBookRepository: JpaLibBookRepository,
-	private val memberRepository: MemberRepository,
-	private val wishListRepository: WishListRepository,
-	private val mailService: MailService,
+    private val checkoutRepository: CheckoutRepository,
+    private val libraryRepository: JpaLibraryRepository,
+    private val jpaLibBookRepository: JpaLibBookRepository,
+    private val memberRepository: MemberRepository,
+    private val wishListRepository: WishListRepository,
+    private val mailService: MailService,
 ) {
 
     fun getBookCheckoutStatus(libBookId: Long): LibBookStatusResponse {
@@ -46,6 +47,7 @@ class CheckoutService(
         }
     }
 
+
     @Transactional
     fun createCheckout(ownerId: Long, request: CheckoutRequest): CheckoutResponse {
         val libBookId = request.libBookId
@@ -58,7 +60,7 @@ class CheckoutService(
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
         if (unreturnedBookCount >= libBook.totalBookCount) {
-            throw IllegalStateException("이 책의 모든 복사본이 대출 중입니다.")
+            throw IllegalStateException("이 책의 모든 책이 대출 중입니다.")
         }
 
 

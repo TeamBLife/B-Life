@@ -19,14 +19,13 @@ import org.springframework.stereotype.Service
 class LibBookReviewService(
     private val libBookReviewRepository: LibBookReviewRepository,
     private val libBookRepository: JpaLibBookRepository,
-    private val memberRepository: MemberRepository,
+    private val memberRepository: MemberRepository
 ) {
 
     fun getReviewListByLibBookId(libBookId: Long, pageable: Pageable): Page<LibBookReviewResponse> {
-        val reviewPage = libBookReviewRepository.findByLibBookId(libBookId, pageable)
+        val reviews = libBookReviewRepository.findByLibBookId(libBookId, pageable)
 
-
-        return reviewPage.map { review ->
+        return reviews.map { review ->
             LibBookReviewResponse(
                 id = review.id!!,
                 name = review.member.name,
@@ -39,9 +38,11 @@ class LibBookReviewService(
 
     @Transactional
     fun createBookReviewInLib(libBookId: Long, userId: Long, request: LibBookReviewRequest): LibBookReviewResponse {
-        val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw IllegalArgumentException("library book")
-        val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
-
+        val libBook = libBookRepository.findByIdOrNull(libBookId) ?: throw TODO("도서관에서 해당 책을 찾을 수 없습니다.")
+        val member = memberRepository.findByIdOrNull(userId) ?: throw TODO("해당 유저를 찾을 수 없습니다.")
+        if (1 > request.point || request.point > 10) {
+            throw TODO("점수는 1점에서 10점 사이여야 합니다.")
+        }
         val createdReview = libBookReviewRepository.save(
             LibBookReview(
                 libBook = libBook,
@@ -59,9 +60,12 @@ class LibBookReviewService(
         libBookReviewId: Long, userId: Long,
         request: LibBookReviewRequest,
     ): LibBookReviewResponse {
-        val review = libBookReviewRepository.findByIdOrNull(libBookReviewId) ?: throw IllegalArgumentException("review")
+        val review = libBookReviewRepository.findByIdOrNull(libBookReviewId) ?: throw TODO("review가 없습니다.")
         if (review.member.id != userId) {
             throw TODO("no authority")
+        }
+        if (1 > request.point || request.point > 10) {
+            throw TODO("점수는 1점에서 10점 사이여야 합니다.")
         }
         review.point = request.point
         review.comment = request.comment

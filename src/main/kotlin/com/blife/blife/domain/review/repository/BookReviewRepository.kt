@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface BookReviewRepository : JpaRepository<BookReview, Long> {
 	fun findByBook(book: BookEntity, pageable: Pageable): Page<BookReview>
-	fun findAllByBook(book: BookEntity): List<BookReview>
 }

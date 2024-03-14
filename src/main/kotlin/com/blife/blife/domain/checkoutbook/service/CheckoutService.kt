@@ -30,14 +30,14 @@ class CheckoutService(
 		val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
 		return if (unreturnedBookCount >= libBook.totalBookCount) {
-			LibBookStatusResponse(
+			LibBookStatusResponse  (
 				libBookName = libBook.book.bookName,
 				bookQuantity = libBook.totalBookCount,
 				checkoutCount = unreturnedBookCount,
 				loanAvailable = false
 			)
 		} else {
-			LibBookStatusResponse(
+			LibBookStatusResponse  (
 				libBookName = libBook.book.bookName,
 				bookQuantity = libBook.totalBookCount,
 				checkoutCount = unreturnedBookCount,

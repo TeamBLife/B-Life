@@ -22,10 +22,9 @@ class BookReviewService(
     private val bookRepository: JpaBookRepository,
 ) {
     fun getReviewListByBookId(bookId: Long, pageable: Pageable): Page<BookReviewResponse> {
-        val book = bookRepository.findByIsbn13(bookId) ?: throw TODO("")
-        val reviewPage = bookReviewRepository.findByBook(book, pageable)
-
-        return reviewPage.map { review ->
+        val book = bookRepository.findByIdOrNull(bookId) ?: throw Exception("책을 찾을 수 없음")
+        val reviews = bookReviewRepository.findByBook(book, pageable)
+        return reviews.map { review ->
             BookReviewResponse(
                 id = review.id!!,
                 name = review.member.name,
@@ -35,10 +34,9 @@ class BookReviewService(
         }
     }
 
-
     @Transactional
     fun createBookReview(bookId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
-        val book = bookRepository.findByIdOrNull(bookId) ?: throw IllegalArgumentException("book")
+        val book = bookRepository.findByIdOrNull(bookId) ?: throw throw Exception("책을 찾을 수 없음")
         val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
         val createdReview = bookReviewRepository.save(
             BookReview(

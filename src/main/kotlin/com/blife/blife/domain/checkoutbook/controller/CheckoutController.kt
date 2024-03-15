@@ -23,39 +23,41 @@ class CheckoutController(private val checkoutService: CheckoutService) {
         return ResponseEntity.status(HttpStatus.OK).body(checkoutService.getBookCheckoutStatus(libBookId))
     }
 
-//    @Operation(summary = " 책 대여 예약")
-//    @PostMapping
-//    fun createBookReservation(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-//        @RequestBody bookReservationRequest: BookReservationRequest,
-//    ): ResponseEntity<CheckoutResponse> {
-//        val userId = userPrincipal.id
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//            .body(checkoutService.createReservationBook(userId, bookReservationRequest))
-//    }
+    @Operation(summary = " 책 대여 예약")
+    @PostMapping("/reservation")
+    fun createBookReservation(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @RequestBody bookReservationRequest: BookReservationRequest,
+    ): ResponseEntity<CheckoutResponse> {
+        val userId = userPrincipal.id
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(checkoutService.createReservationBook(userId, bookReservationRequest))
+    }
 
 
     @Operation(summary = "책 대여")
-    @PreAuthorize("hasRole('OWNER')")
     @PostMapping()
     fun createCheckout(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody checkoutRequest: CheckoutRequest,
     ): ResponseEntity<CheckoutResponse> {
         val ownerId = userPrincipal.id
-        return ResponseEntity.status(HttpStatus.CREATED).body(checkoutService.createCheckout(ownerId, checkoutRequest))
+        val hasRole = userPrincipal.authorities
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(checkoutService.createCheckout(ownerId, hasRole, checkoutRequest))
     }
 
 
     @Operation(summary = "책 반납")
-    @PreAuthorize("hasRole('OWNER')")
     @PatchMapping()
     fun returnBook(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody returnBookRequest: ReturnBookRequest,
     ): ResponseEntity<ReturnBookResponse> {
         val ownerId = userPrincipal.id
-        return ResponseEntity.status(HttpStatus.OK).body(checkoutService.returnBook(ownerId, returnBookRequest))
+        val hasRole = userPrincipal.authorities
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(checkoutService.returnBook(ownerId, hasRole, returnBookRequest))
     }
 
 }

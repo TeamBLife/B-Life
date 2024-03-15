@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
 class LibBookReviewService(
     private val libBookReviewRepository: LibBookReviewRepository,
     private val libBookRepository: JpaLibBookRepository,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
 ) {
 
     fun getReviewListByLibBookId(libBookId: Long, pageable: Pageable): Page<LibBookReviewResponse> {

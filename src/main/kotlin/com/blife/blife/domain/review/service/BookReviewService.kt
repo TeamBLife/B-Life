@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
 class BookReviewService(
     private val bookReviewRepository: BookReviewRepository,
     private val memberRepository: MemberRepository,
-    private val bookRepository: JpaBookRepository
+    private val bookRepository: JpaBookRepository,
 ) {
     fun getReviewListByBookId(bookId: Long, pageable: Pageable): Page<BookReviewResponse> {
         val book = bookRepository.findByIdOrNull(bookId) ?: throw TODO("책을 찾을 수 없음")
@@ -57,7 +57,7 @@ class BookReviewService(
     @Transactional
     fun updateBookReview(bookReviewId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
         val review =
-            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw IllegalArgumentException("review")
+            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("리뷰를 찾을 수 없습니다.")
         if (review.member.id != userId) {
             throw TODO("no authority")
         }
@@ -71,7 +71,7 @@ class BookReviewService(
     }
 
     fun deleteReview(bookReviewId: Long, userId: Long) {
-        val review = bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("no data error")
+        val review = bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("리뷰를 찾을 수 없습니다.")
         if (review.member.id != userId) {
             throw TODO("no authority")
         }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/libbookreviews")
 class LibBookReviewController(
-    private val libBookReviewService: LibBookReviewService
+    private val libBookReviewService: LibBookReviewService,
 ) {
 
     @Operation(summary = "도서관내 책 리뷰 조회")

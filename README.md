@@ -1,6 +1,3 @@
-# <strong>💻 </strong>
-
-
 ## 📑 개요
 
 
@@ -9,7 +6,7 @@
 - **프로젝트 설명** : 도서관들의 책을 모아, 어느 책이 있는지 확인 할 수 있으며, 책의 상태와 리뷰 등을 한눈에 볼 수 있는 플랫폼입니다. 
 
 
-## 🤺 MovieToGather Team
+## Blife
 
 - <strong>팀장</strong> 전창현
     - [github](https://github.com/MyohanMyolang)

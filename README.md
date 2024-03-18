@@ -69,15 +69,12 @@
 - **QueryDsl**
 
 - **Spring Security**
-  - 
 
 - **JWT**
 
 - **PostgreSql**
-  - 
 
 - **RestClient**
-    - 
 
 ## **배포환경**
 - Front-End : Vercel

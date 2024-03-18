@@ -26,15 +26,15 @@ class CheckoutBook(
 	var returnTime: LocalDateTime?,
 
 	@Column(name = "due_date")
-	val dueDate: LocalDate
+	val dueDate: LocalDate,
 
-) {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long? = null
+	) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null
 
-	@PrePersist
-	fun onPrePersist() {
-		checkoutTime = LocalDateTime.now()
-	}
+    @PrePersist
+    fun onPrePersist() {
+        checkoutTime = LocalDateTime.now()
+    }
 }

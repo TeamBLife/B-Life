@@ -12,7 +12,7 @@ data class KakaoBookSearchResponseDocument(
 	val contents: String,
 	val url: String,
 	val isbn: String,
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") val datetime: LocalDateTime,
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") val datetime: LocalDateTime?,
 	val authors: List<String>,
 	val publisher: String,
 	val translators: List<String>,
@@ -29,11 +29,12 @@ data class KakaoBookSearchResponseDocument(
 		coverUrl = thumbnail,
 		isbn10 = getIsbn10(),
 		isbn13 = getIsbn13(),
-		publicationDate = datetime
+		publicationDate = datetime ?: LocalDateTime.now()
 	)
 
-	private fun getIsbn10(): Long {
+	private fun getIsbn10(): Long? {
 		return this.isbn.split(" ")[0]
+			.also { if(it == "") return null }
 			.filter { it.isDigit() }
 			.toLong()
 	}
@@ -41,7 +42,9 @@ data class KakaoBookSearchResponseDocument(
 	private fun getIsbn13(): Long {
 		return this.isbn.split(" ")
 			.takeIf { it.size == 2 }
-			?.let { it[1].toLong() }
+			?.let { it[1] }
+			?.filter { it.isDigit() }
+			?.toLong()
 			?: throw TODO("")
 	}
 }

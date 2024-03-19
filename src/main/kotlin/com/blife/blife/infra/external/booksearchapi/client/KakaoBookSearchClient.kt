@@ -67,8 +67,14 @@ class KakaoBookSearchClient(
 
 		val resultData = responseEntity.body
 
-		return if (resultData !== null && resultData.documents.isNotEmpty())
+		if(resultData?.meta?.totalCount!! < page * 10 && page != 1L ){
+			throw TODO("데이터를 더 안가지고 오겠다")
+		}
+
+		return if (resultData.documents.isNotEmpty()) {
+
 			Pair(resultData.documents.map { it.convertToBook() }, null)
+		}
 		else
 			Pair(null, errorObject.errorCode)
 	}

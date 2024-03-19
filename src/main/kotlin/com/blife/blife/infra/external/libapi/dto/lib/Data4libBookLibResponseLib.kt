@@ -3,6 +3,8 @@ package com.blife.blife.infra.external.libapi.dto.lib
 import com.blife.blife.domain.library.enums.REGION
 import com.blife.blife.domain.library.model.Library
 
+// TODO : 변수명은 Snake Case로 작업 하고 JsonProperty를 이용해서 데이터를 받아 올 수 있게 리펙토링
+
 data class Data4libBookLibResponseLib(
 	val libCode: String,
 	val libName: String,
@@ -31,6 +33,9 @@ data class Data4libBookLibResponseLib(
 	)
 
 	private fun getRegion(): REGION {
-		return 1 as REGION
+		val split = address.split(" ")
+		val city = split[0]
+		val district = split[1]
+		return REGION.getCodeByCityAndDistrict(city, district)
 	}
 }

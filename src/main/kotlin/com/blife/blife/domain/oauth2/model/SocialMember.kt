@@ -16,7 +16,10 @@ class SocialMember(
 	val nickname: String,
 	val email: String,
 	val role: MemberRole,
-) {
+	@OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+	@JoinColumn(name = "member_id", referencedColumnName = "id")
+	val member: Member? = null
+){
 
 
 	enum class OAuth2Provider {

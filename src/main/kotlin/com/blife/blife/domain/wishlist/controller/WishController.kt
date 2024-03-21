@@ -20,7 +20,7 @@ class WishController(private val wishService: WishService) {
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ResponseEntity<Any> {
         val userId = userPrincipal.id
-            wishService.createWishList(userId, libBookId)
-            return ResponseEntity.status(HttpStatus.CREATED).build()
+        wishService.createWishList(userId, libBookId)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 }

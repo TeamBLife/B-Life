@@ -25,7 +25,7 @@ class BookReviewController(
     fun getBookReviewList(
         @PathVariable bookId: Long,
         @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "5") size: Int
+        @RequestParam(defaultValue = "5") size: Int,
     ): ResponseEntity<Page<BookReviewResponse>> {
         val pageable = PageRequest.of(page, size)
         val bookReviews = bookReviewService.getReviewListByBookId(bookId, pageable)

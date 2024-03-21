@@ -22,7 +22,7 @@ class BookReviewService(
     private val bookRepository: JpaBookRepository,
 ) {
     fun getReviewListByBookId(bookId: Long, pageable: Pageable): Page<BookReviewResponse> {
-        val book = bookRepository.findByIdOrNull(bookId) ?: throw Exception("책을 찾을 수 없음")
+        val book = bookRepository.findByIdOrNull(bookId) ?: throw TODO("책을 찾을 수 없음")
         val reviews = bookReviewRepository.findByBook(book, pageable)
         return reviews.map { review ->
             BookReviewResponse(
@@ -36,8 +36,12 @@ class BookReviewService(
 
     @Transactional
     fun createBookReview(bookId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
-        val book = bookRepository.findByIdOrNull(bookId) ?: throw throw Exception("책을 찾을 수 없음")
-        val member = memberRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("member")
+        val book = bookRepository.findByIdOrNull(bookId) ?: throw TODO("책을 찾을 수 없음")
+        val member = memberRepository.findByIdOrNull(userId) ?: throw TODO("멤버를 찾을 수 없음")
+        if (1 > request.point || request.point > 10) {
+            throw TODO("점수는 1점에서 10점 사이여야 합니다.")
+        }
+
         val createdReview = bookReviewRepository.save(
             BookReview(
                 book = book,
@@ -53,9 +57,12 @@ class BookReviewService(
     @Transactional
     fun updateBookReview(bookReviewId: Long, userId: Long, request: BookReviewRequest): BookReviewResponse {
         val review =
-            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw IllegalArgumentException("review")
+            bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("리뷰를 찾을 수 없습니다.")
         if (review.member.id != userId) {
             throw TODO("no authority")
+        }
+        if (1 > request.point || request.point > 10) {
+            throw TODO("점수는 1점에서 10점 사이여야 합니다.")
         }
         review.point = request.point
         review.comment = request.comment
@@ -64,7 +71,7 @@ class BookReviewService(
     }
 
     fun deleteReview(bookReviewId: Long, userId: Long) {
-        val review = bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("no data error")
+        val review = bookReviewRepository.findByIdOrNull(bookReviewId) ?: throw TODO("리뷰를 찾을 수 없습니다.")
         if (review.member.id != userId) {
             throw TODO("no authority")
         }

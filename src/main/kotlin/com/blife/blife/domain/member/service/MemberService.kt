@@ -31,8 +31,10 @@ class MemberService(
 		memberRepository.findByEmail(request.email)?.let { throw TODO("이미 가입되어 있는 Email") }
 		return memberRepository.save(
 			Member(
+				isSocialUser =  false,
+				providerId = null,
 				email = request.email,
-				name = request.name,
+				nickname = request.nickname,
 				password = passwordEncoder.encode(request.password),
 				role = role
 			)
@@ -46,14 +48,14 @@ class MemberService(
 					)
 				)
 			}
-			.let { member -> MemberResponse(member.role, member.name, member.email) }
+			.let { member -> MemberResponse(member.role, member.nickname, member.email) }
 	}
 
 	fun login(request: MemberLoginRequest): MemberLoginResponse {
 		val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
 
 		if (!passwordEncoder.matches(request.password, user.password)) {
-			throw InvalidCredentialException("Email is already in use")
+			throw InvalidCredentialException("Wrong password")
 		}
 
 		return MemberLoginResponse(
@@ -70,12 +72,12 @@ class MemberService(
 
 		when (member.role) {
 			MemberRole.USER -> {
-				member.name = "탈퇴한 회원${member.id}"
+				member.nickname = "탈퇴한 회원${member.id}"
 				member.isDeleted = true
 			}
 
 			MemberRole.OWNER -> {
-				member.name = "탈퇴한 회원${member.id}"
+				member.nickname = "탈퇴한 회원${member.id}"
 				member.isDeleted = true
 			}
 

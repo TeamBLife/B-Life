@@ -1,11 +1,11 @@
 package com.blife.blife.domain.oauth2.client.oauth2.naver
 
+import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2Client
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2LoginUserInfo
 import com.blife.blife.domain.oauth2.client.oauth2.naver.dto.NaverLoginUserInfoResponse
 import com.blife.blife.domain.oauth2.client.oauth2.naver.dto.NaverResponse
 import com.blife.blife.domain.oauth2.client.oauth2.naver.dto.NaverTokenResponse
-import com.blife.blife.domain.oauth2.model.SocialMember
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.util.LinkedMultiValueMap
@@ -55,8 +55,8 @@ class NaverOAuth2Client(
 			?: throw RuntimeException("네이버 UserInfo 조회 실패")
 	}
 
-	override fun supports(provider: SocialMember.OAuth2Provider): Boolean {
-		return provider == SocialMember.OAuth2Provider.NAVER
+	override fun supports(provider: Member.OAuth2Provider): Boolean {
+		return provider == Member.OAuth2Provider.NAVER
 	}
 
 	companion object {

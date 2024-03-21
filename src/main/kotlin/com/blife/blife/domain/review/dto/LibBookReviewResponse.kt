@@ -2,7 +2,7 @@ package com.blife.blife.domain.review.dto
 
 data class LibBookReviewResponse(
     val id: Long,
-    val name: String,
+    val nickname: String,
     val point: Float,
     val comment: String,
     val status: String
@@ -11,7 +11,7 @@ data class LibBookReviewResponse(
         fun from(libBookReviewResponse: LibBookReviewResponse) = LibBookReviewResponse(
             comment = libBookReviewResponse.comment,
             id = libBookReviewResponse.id,
-            name = libBookReviewResponse.name,
+            nickname = libBookReviewResponse.nickname,
             point = libBookReviewResponse.point,
             status = libBookReviewResponse.status
         )

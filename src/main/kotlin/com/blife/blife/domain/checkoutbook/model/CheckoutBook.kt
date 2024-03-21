@@ -1,7 +1,11 @@
 package com.blife.blife.domain.checkoutbook.model
 
+import com.blife.blife.domain.checkoutbook.dto.CheckoutResponse
 import com.blife.blife.domain.member.model.Member
+import com.blife.blife.domain.review.dto.BookReviewResponse
+import com.blife.blife.domain.review.model.BookReview
 import com.blife.blife.infra.postgresql.library.entity.LibBookEntity
+import com.blife.blife.infra.postgresql.library.entity.LibraryEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime

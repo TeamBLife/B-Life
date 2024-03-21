@@ -49,6 +49,7 @@ class CheckoutController(private val checkoutService: CheckoutService) {
 
 
     @Operation(summary = "책 반납")
+    @PreAuthorize("hasRole('OWNER')")
     @PatchMapping()
     fun returnBook(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,

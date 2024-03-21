@@ -58,7 +58,7 @@ jobs:
         run: ./gradlew build -x test
 
       - name: Test
-        run: ./gradlew test --spring.profiles.active=dev
+        run: ./gradlew test -Dspring.profiles.active=dev
 
       - name: 테스트 결과 PR 등록
         uses: EnricoMi/publish-unit-test-result-action@v2

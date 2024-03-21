@@ -9,10 +9,11 @@ class LibBook(
 	val id: Long? = null
 ) {
 	companion object {
-		fun of(lib: Library, book: Book, totalBookCount: Long) = LibBook(
+		fun of(lib: Library, book: Book, totalBookCount: Long, id: Long? = null) = LibBook(
 			lib = lib,
 			book = book,
-			totalBookCount = totalBookCount
+			totalBookCount = totalBookCount,
+			id = id
 		)
 	}
 }

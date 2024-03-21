@@ -14,9 +14,11 @@ class LibBookEntity(
 	@JoinColumn(name = "book_id")
 	val book: BookEntity,
 
-	val totalBookCount: Long
-) {
+	val totalBookCount: Long,
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null
+) {
+
 }

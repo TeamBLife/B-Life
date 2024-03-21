@@ -14,4 +14,5 @@ interface ILibraryRepository {
 	fun getLibBookById(libBookId: Long): LibBook
 
 	fun isLibBookOwner(libBookId: Long, ownerId: Long): Boolean
+	fun isLibraryOwner(libId: Long, ownerId: Long): Boolean
 }

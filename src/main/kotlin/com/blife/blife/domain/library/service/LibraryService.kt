@@ -21,7 +21,7 @@ class LibraryService(
 	fun getLibBook(libBookId: Long): LibBook = libraryRepository.getLibBookById(libBookId)
 	fun deleteLibBook(libBookId: Long): Unit = libraryRepository.removeLibBook(libBookId)
 
-	fun checkLibBookOwner(libBookId: Long, ownerId: Long): Boolean =
-		libraryRepository.isLibBookOwner(libBookId, ownerId)
-			.apply { if (!this) throw TODO("Owner 아님") }
+	fun isLibBookOwner(libBookId: Long, ownerId: Long): Boolean = libraryRepository.isLibBookOwner(libBookId, ownerId)
+	fun isLibraryOwner(libId: Long, ownerId: Long): Boolean = libraryRepository.isLibraryOwner(libId, ownerId)
+
 }

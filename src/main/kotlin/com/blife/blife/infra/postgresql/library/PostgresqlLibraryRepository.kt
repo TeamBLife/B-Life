@@ -67,7 +67,14 @@ class PostgresqlLibraryRepository(
 	override fun isLibBookOwner(libBookId: Long, ownerId: Long): Boolean {
 		val libBookEntity = jpaLibBookRepository.findByIdOrNull(libBookId) ?: TODO("등록되지 않은 도서관 책")
 
-		return libBookEntity.lib.libId == libBookId
+		return libBookEntity.lib.member.id == ownerId
 	}
+
+	override fun isLibraryOwner(libId: Long, ownerId: Long): Boolean {
+		val libraryEntity = jpaLibraryRepository.findByIdOrNull(libId) ?: TODO("도서관이 존재하지 않음")
+
+		return libraryEntity.member.id!! == ownerId
+	}
+
 
 }

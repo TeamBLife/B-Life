@@ -1,9 +1,9 @@
 package com.blife.blife.domain.oauth2.client.oauth2.kakao
 
+import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2Client
 import com.blife.blife.domain.oauth2.client.oauth2.kakao.dto.KakaoTokenResponse
 import com.blife.blife.domain.oauth2.client.oauth2.kakao.dto.KakaoUserInfoResponse
-import com.blife.blife.domain.oauth2.model.SocialMember
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -51,8 +51,8 @@ class KakaoOAuth2Client(
 			?: throw RuntimeException("카카오 UserInfo 조회 실패")
 	}
 
-	override fun supports(provider: SocialMember.OAuth2Provider): Boolean {
-		return provider == SocialMember.OAuth2Provider.KAKAO
+	override fun supports(provider: Member.OAuth2Provider): Boolean {
+		return provider == Member.OAuth2Provider.KAKAO
 	}
 
 	companion object {

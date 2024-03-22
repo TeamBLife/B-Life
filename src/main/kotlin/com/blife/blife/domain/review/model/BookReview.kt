@@ -29,7 +29,7 @@ class BookReview(
 fun BookReview.toResponse(): BookReviewResponse {
 	return BookReviewResponse(
 		id = id!!,
-		name = member.name,
+		nickname = member.nickname,
 		point = point,
 		comment = comment
 	)

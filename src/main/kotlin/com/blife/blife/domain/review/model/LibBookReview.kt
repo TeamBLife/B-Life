@@ -33,7 +33,7 @@ class LibBookReview(
 fun LibBookReview.toLibBookResponse(): LibBookReviewResponse {
 	return LibBookReviewResponse(
 		id = id!!,
-		name = member.name,
+		nickname = member.nickname,
 		point = point,
 		comment = comment,
 		status = status,

@@ -4,7 +4,7 @@ import com.blife.blife.domain.review.model.BookReview
 
 data class BookReviewResponse(
 	val id: Long,
-	val name: String,
+	val nickname: String,
 	val point: Float,
 	val comment: String
 ){
@@ -12,7 +12,7 @@ data class BookReviewResponse(
 		fun from(bookReviewResponse: BookReviewResponse) = BookReviewResponse(
 			comment = bookReviewResponse.comment,
 			id = bookReviewResponse.id,
-			name = bookReviewResponse.name,
+			nickname = bookReviewResponse.nickname,
 			point = bookReviewResponse.point,
 		)
 	}

@@ -1,7 +1,7 @@
 package com.blife.blife.domain.oauth2.client.oauth2.naver.dto
 
+import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.oauth2.client.oauth2.OAuth2LoginUserInfo
-import com.blife.blife.domain.oauth2.model.SocialMember
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 
@@ -11,7 +11,7 @@ class NaverLoginUserInfoResponse(
 	nickname: String,
 	email: String
 ) : OAuth2LoginUserInfo(
-	provider = SocialMember.OAuth2Provider.NAVER,
+	provider = Member.OAuth2Provider.NAVER,
 	id = id,
 	nickname = nickname,
 	email = email

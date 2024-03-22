@@ -27,7 +27,7 @@ class BookReviewService(
         return reviews.map { review ->
             BookReviewResponse(
                 id = review.id!!,
-                name = review.member.name,
+                nickname = review.member.nickname,
                 point = review.point,
                 comment = review.comment
             )

@@ -5,6 +5,7 @@ import com.blife.blife.domain.member.dto.request.MemberSignupRequest
 import com.blife.blife.domain.member.dto.response.MemberLoginResponse
 import com.blife.blife.domain.member.dto.response.MemberResponse
 import com.blife.blife.domain.member.enums.MemberRole
+import com.blife.blife.domain.member.enums.MemberStatus
 import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.member.model.WaitMember
 import com.blife.blife.domain.member.repository.MemberRepository
@@ -53,6 +54,14 @@ class MemberService(
 
 	fun login(request: MemberLoginRequest): MemberLoginResponse {
 		val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
+
+		if (user.isSocialUser){
+			throw InvalidCredentialException("social member can not login in hear")
+		}
+
+		if (user.status == MemberStatus.WAIT){
+			throw InvalidCredentialException("Authenticate not yet")
+		}
 
 		if (!passwordEncoder.matches(request.password, user.password)) {
 			throw InvalidCredentialException("Wrong password")

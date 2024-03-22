@@ -7,6 +7,6 @@ interface MemberRepository : JpaRepository<Member, Long> {
 	fun findByEmail(email: String): Member?
 
 	fun existsByProviderAndProviderId(provider: Member.OAuth2Provider, toString: String): Boolean
-	fun findByProviderAndProviderId(provider: Member.OAuth2Provider, toString: String): Member
+	fun findByProviderAndProviderId(provider: Member.OAuth2Provider, toString: String): Member?
 
 }

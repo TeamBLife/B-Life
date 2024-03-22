@@ -3,7 +3,6 @@ package com.blife.blife.domain.library.controller.dto
 import com.blife.blife.domain.library.model.Library
 
 data class LibraryResponse(
-	val memberId: Long,
 	val libName: String,
 	val address: String,
 	val libId: Long,
@@ -17,7 +16,6 @@ data class LibraryResponse(
 ) {
 	companion object {
 		fun from(library: Library) = LibraryResponse(
-			memberId = library.memberId,
 			regionCode = library.region.code,
 			latitude = library.latitude,
 			homepage = library.homepage,

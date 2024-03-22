@@ -300,8 +300,13 @@ enum class REGION(val code: Long, val cityName: String, val districtName: String
 	JEJU_JEJU(39010, "제주특별자치도", "제주시"),
 	JEJU_SEOGWIPO(39020, "제주특별자치도", "서귀포시");
 
-	fun getCodeByCityAndDistrict(city: String, district: String) {
-		entries.find { it.cityName == city && it.districtName == district }
-	}
 
+	companion object {
+		fun getByCode(regionCode: Long): REGION =
+			entries.find { it.code == regionCode } ?: throw TODO("없는 지역 코드 log 찍기")
+		
+		fun getCodeByCityAndDistrict(city: String, district: String): REGION =
+			entries.find { it.cityName == city && it.districtName == district }
+				?: throw TODO("찾을 수 없음 log 찍기")
+	}
 }

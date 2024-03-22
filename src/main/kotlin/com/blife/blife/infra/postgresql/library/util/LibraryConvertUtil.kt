@@ -45,7 +45,8 @@ open class LibraryConvertUtil : BookConvertUtil() {
 		LibBookEntity(
 			lib = libraryEntity,
 			book = bookEntity,
-			totalBookCount = libBook.totalBookCount
+			totalBookCount = libBook.totalBookCount,
+			id = libBook.id
 		)
 
 	protected fun toLibBook(libBookEntity: LibBookEntity): LibBook = LibBook(

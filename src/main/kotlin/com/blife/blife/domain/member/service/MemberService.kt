@@ -10,6 +10,7 @@ import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.member.model.WaitMember
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.member.repository.WaitMemberRepository
+import com.blife.blife.global.exception.CustomException
 import com.blife.blife.global.exception.InvalidCredentialException
 import com.blife.blife.global.security.JwtPlugin
 import com.blife.blife.global.util.mail.service.MemberMailService
@@ -28,6 +29,7 @@ class MemberService(
 	private val jwtPlugin: JwtPlugin
 ) {
 	@Transactional
+
 	fun signup(request: MemberSignupRequest, role: MemberRole): MemberResponse {
 		memberRepository.findByEmail(request.email)?.let { throw TODO("이미 가입되어 있는 Email") }
 		return memberRepository.save(

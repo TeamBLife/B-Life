@@ -26,15 +26,14 @@ class SecurityConfig(
 			.formLogin { it.disable() }
 			.csrf { it.disable() }
 			.cors { it.configurationSource(corsConfigSource()) }
-			.cors { it.disable() }
-			.headers { it.frameOptions { frameOptionConfig -> frameOptionConfig.disable() } }
 			.authorizeHttpRequests {
 				it.requestMatchers(
-					"/auth/login",
-					"/auth/signup",
+					"/oauth2/**",
+					"/auth/**",
 					"swagger-ui/**",
 					"/v3/api-docs/**",
-					"/error"
+					"/error",
+					"/books/**"
 				).permitAll()
 					.anyRequest().authenticated()
 			}

@@ -19,9 +19,9 @@ class OAuth2LoginService(
 	// 4. SocialMember 를 토대로 우리쪽 액세스 토큰 발급 후 응답
 
 	fun login(provider: Member.OAuth2Provider, authorizationCode: String): MemberLoginResponse {
-		return oAuth2ClientService.login(provider, authorizationCode)
+		val user = oAuth2ClientService.login(provider, authorizationCode)
 			.let { socialMemberService.registerIfAbsent(it) }
-			.let { jwtPlugin.generateAccessToken(it.id!!.toString(), it.email, it.role.name) }
-			.let { MemberLoginResponse(it) }
+		return user.let { jwtPlugin.generateAccessToken(it.id!!.toString(), it.email, it.role.name) }
+			.let { MemberLoginResponse(accessToken = it, nickname = user.nickname, status = user.status) }
 	}
 }

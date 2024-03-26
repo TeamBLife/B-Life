@@ -30,10 +30,10 @@ class AuthController(
 	}
 
 	@PostMapping("/signup")
-	fun signup(@RequestBody @Valid signupRequest: MemberSignupRequest): ResponseEntity<MemberResponse> {
+	fun signup(@RequestBody @Valid signupRequest: MemberSignupRequest, @RequestParam role: MemberRole): ResponseEntity<MemberResponse> {
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(memberService.signup(signupRequest, MemberRole.USER))
+			.body(memberService.signup(signupRequest, role))
 	}
 
 	@PostMapping("/login")
@@ -43,20 +43,7 @@ class AuthController(
 			.body(memberService.login(loginRequest))
 	}
 
-	@PostMapping("/signup/owner")
-	fun ownerLogin(@RequestBody @Valid signupRequest: MemberSignupRequest): ResponseEntity<MemberResponse> {
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(memberService.signup(signupRequest, MemberRole.OWNER))
-	}
 
 	// 소프트 딜리트 후 회원 탈ㅊ퇴 but 3일 이내에 다시 회월 탈퇴 철회를 하면은 바로 복귀
-	@PutMapping("/signout/{memberId}")
-	fun signout(
-		@AuthenticationPrincipal userPrincipal: UserPrincipal
-	): ResponseEntity<Unit> {
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(memberService.signout(userPrincipal.id))
-	}
+
 }

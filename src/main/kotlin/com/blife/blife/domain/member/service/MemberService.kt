@@ -74,7 +74,8 @@ class MemberService(
 				subject = user.id.toString(),
 				email = user.email,
 				role = user.role.name
-			)
+			),
+			name = user.name
 		)
 	}
 

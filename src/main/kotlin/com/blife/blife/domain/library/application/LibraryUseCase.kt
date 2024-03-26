@@ -39,7 +39,6 @@ class LibraryUseCase(
 				kakaoBookSearchClient.searchBookDetailInfo(isbn) errorHandlingIfHasError { }
 			}
 			val library = libraryService.getLibrary(libId)
-
 			LibBook.of(library, book, totalBookCount)
 				.let { libraryService.saveLibBook(it) }
 		}

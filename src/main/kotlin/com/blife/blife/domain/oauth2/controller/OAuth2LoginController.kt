@@ -21,9 +21,8 @@ class OAuth2LoginController(
 	fun redirectLoginPage(
 		@PathVariable provider: Member.OAuth2Provider,
 		response: HttpServletResponse
-	) {
-		val loginPageUrl = oAuth2ClientService.generateLoginPageUrl(provider)
-		response.sendRedirect(loginPageUrl)
+	): String? {
+		return oAuth2ClientService.generateLoginPageUrl(provider)
 	}
 
 	//2. AuthorizationCode를 이용해 사용자 인증을 처리해 주는 API

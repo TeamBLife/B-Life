@@ -70,7 +70,6 @@ dependencies {
     //redis
 	implementation ("org.springframework.boot:spring-boot-starter-data-redis")
 
-	implementation ("org.springframework.boot:spring-boot-starter-oauth2-client")
 
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 

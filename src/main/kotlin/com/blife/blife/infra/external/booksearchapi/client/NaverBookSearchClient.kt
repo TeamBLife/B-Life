@@ -30,12 +30,6 @@ class NaverBookSearchClient(
 		.baseUrl(BASE_URL)
 		.defaultHeader("X-Naver-Client-Id", clientId)
 		.defaultHeader("X-Naver-Client-Secret", clientSecret)
-		.defaultStatusHandler(HttpStatusCode::is4xxClientError) { _, response ->
-			JSONValue.parse(response.body.reader()) as JSONObject
-		}
-		.defaultStatusHandler(HttpStatusCode::is5xxServerError) { _, response ->
-			JSONValue.parse(response.body.reader()) as JSONObject
-		}
 		.build()
 
 

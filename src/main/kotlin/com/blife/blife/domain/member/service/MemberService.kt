@@ -10,7 +10,6 @@ import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.member.model.WaitMember
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.member.repository.WaitMemberRepository
-import com.blife.blife.global.exception.CustomException
 import com.blife.blife.global.exception.InvalidCredentialException
 import com.blife.blife.global.security.JwtPlugin
 import com.blife.blife.global.util.mail.service.MemberMailService
@@ -29,12 +28,11 @@ class MemberService(
 	private val jwtPlugin: JwtPlugin
 ) {
 	@Transactional
-
 	fun signup(request: MemberSignupRequest, role: MemberRole): MemberResponse {
 		memberRepository.findByEmail(request.email)?.let { throw TODO("이미 가입되어 있는 Email") }
 		return memberRepository.save(
 			Member(
-				isSocialUser =  false,
+				isSocialUser = false,
 				providerId = null,
 				email = request.email,
 				nickname = request.nickname,
@@ -51,17 +49,24 @@ class MemberService(
 					)
 				)
 			}
-			.let { member -> MemberResponse(member.role, member.nickname, member.email) }
+			.let { member ->
+				MemberResponse(
+					role = member.role,
+					nickname = member.nickname,
+					email = member.email,
+					status = member.status
+				)
+			}
 	}
 
 	fun login(request: MemberLoginRequest): MemberLoginResponse {
 		val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
 
-		if (user.isSocialUser){
+		if (user.isSocialUser) {
 			throw InvalidCredentialException("social member can not login in hear")
 		}
 
-		if (user.status == MemberStatus.WAIT){
+		if (user.status == MemberStatus.WAIT) {
 			throw InvalidCredentialException("Authenticate not yet")
 		}
 
@@ -74,7 +79,9 @@ class MemberService(
 				subject = user.id.toString(),
 				email = user.email,
 				role = user.role.name
-			)
+			),
+			nickname = user.nickname,
+			status = user.status
 		)
 	}
 

@@ -42,7 +42,7 @@ class BookSearchService(
 	}
 
 	fun searchBookListByTitle(title: String, page: Long): List<Book>? {
-		for (client in bookSearchClients) {
+		for (client in bookSearchClients.reversed()) {
 			val result = client.searchBookListByTitle(title, page) errorHandlingIfHasError errorHandler
 			if (result != null) return result
 		}

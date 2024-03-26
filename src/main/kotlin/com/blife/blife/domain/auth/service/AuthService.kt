@@ -28,5 +28,6 @@ class AuthService(
 
 		val member = memberRepository.findByEmail(request.email) ?: throw TODO("관리자 문의 필요한 상황")
 		member.status = MemberStatus.NORMAL
+		waitMemberRepository.delete(waitMember)
 	}
 }

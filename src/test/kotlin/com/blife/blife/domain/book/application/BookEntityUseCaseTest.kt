@@ -117,19 +117,6 @@ class BookEntityUseCaseTest : DescribeSpec({
 			}
 		}
 		context("요청을 하고 문제가 없을 경우") {
-			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(
-				generateBookListData("Kakao Data"),
-				null
-			)
-			it("Kakao에서 데이터를 가지고 온다.") {
-				bookUseCase.searchBookListByTitle("", 1).forEach {
-					it.title shouldBe "Kakao Data"
-				}
-			}
-		}
-
-		context("Kakao에서 에러가 날 경우") {
-			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
 			every { naverClient.searchBookListByTitle(any(), any()) } returns Pair(
 				generateBookListData("Naver Data"),
 				null
@@ -137,6 +124,19 @@ class BookEntityUseCaseTest : DescribeSpec({
 			it("Naver에서 데이터를 가지고 온다.") {
 				bookUseCase.searchBookListByTitle("", 1).forEach {
 					it.title shouldBe "Naver Data"
+				}
+			}
+		}
+
+		context("Naver에서 에러가 날 경우") {
+			every { naverClient.searchBookListByTitle(any(), any()) } returns Pair(null, ExternalErrorCode.OVER_QUARTER)
+			every { kakaoClient.searchBookListByTitle(any(), any()) } returns Pair(
+				generateBookListData("Kakao Data"),
+				null
+			)
+			it("Kakao에서 데이터를 가지고 온다.") {
+				bookUseCase.searchBookListByTitle("", 1).forEach {
+					it.title shouldBe "Kakao Data"
 				}
 			}
 		}

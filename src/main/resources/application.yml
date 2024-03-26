@@ -1,3 +1,9 @@
+#server:
+#  ssl:
+#    key-store: keystore.p12
+#    key-store-type: PKCS12
+#    key-store-password: alskdj
+
 spring:
   profiles:
     active:
@@ -36,11 +42,11 @@ spring:
 oauth2:
   kakao:
     client_id: ${OAUTH2_KAKAO_CLIENT_ID}
-    redirect_url: "http://localhost:8080/oauth2/kakao"
+    redirect_url: "http://localhost:3000/oauth2/kakao"
   naver:
     client_id: ${OAUTH2_NAVER_CLIENT_ID}
     client_secret: ${OAUTH2_NAVER_CLIENT_SECRET}
-    redirect_url: "http://localhost:8080/oauth2/naver"
+    redirect_url: "http://localhost:3000/oauth2/naver"
 
 
 
@@ -59,3 +65,24 @@ external:
     clientId: ${NAVER_CLIENT_ID}
     clientSecret: ${NAVER_CLIENT_SECRET}
 
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+server:
+  port: 443
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 8080
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+server:
+  port: 8080

@@ -22,6 +22,13 @@ class OAuth2LoginService(
 		val user = oAuth2ClientService.login(provider, authorizationCode)
 			.let { socialMemberService.registerIfAbsent(it) }
 		return user.let { jwtPlugin.generateAccessToken(it.id!!.toString(), it.email, it.role.name) }
-			.let { MemberLoginResponse(accessToken = it, nickname = user.nickname, status = user.status) }
+			.let {
+				MemberLoginResponse(
+					accessToken = it,
+					nickname = user.nickname,
+					status = user.status,
+					role = user.role
+				)
+			}
 	}
 }

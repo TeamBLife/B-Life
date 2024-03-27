@@ -81,7 +81,8 @@ class MemberService(
 				role = user.role.name
 			),
 			nickname = user.nickname,
-			status = user.status
+			status = user.status,
+			role = user.role
 		)
 	}
 

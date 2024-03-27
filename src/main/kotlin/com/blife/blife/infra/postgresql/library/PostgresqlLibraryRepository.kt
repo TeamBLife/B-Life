@@ -32,6 +32,7 @@ class PostgresqlLibraryRepository(
 	override fun saveLibBook(libBook: LibBook): LibBook {
 		val libEntity = jpaLibraryRepository.findByIdOrNull(libBook.lib.libId) ?: throw TODO("")
 		val bookEntity = jpaBookRepository.findByIsbn13(libBook.book.isbn13) ?: throw TODO("")
+		jpaLibBookRepository.findByBook(bookEntity)?.let { throw TODO("이미 있는 책") }
 
 		return toLibBookEntity(libEntity, bookEntity, libBook)
 			.let { jpaLibBookRepository.save(it) }

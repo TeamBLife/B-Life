@@ -10,7 +10,7 @@ import com.blife.blife.domain.member.model.Member
 import com.blife.blife.domain.member.model.WaitMember
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.member.repository.WaitMemberRepository
-import com.blife.blife.global.exception.InvalidCredentialException
+import com.blife.blife.global.exception.*
 import com.blife.blife.global.security.JwtPlugin
 import com.blife.blife.global.util.mail.service.MemberMailService
 import org.springframework.data.repository.findByIdOrNull
@@ -29,7 +29,7 @@ class MemberService(
 ) {
 	@Transactional
 	fun signup(request: MemberSignupRequest, role: MemberRole): MemberResponse {
-		memberRepository.findByEmail(request.email)?.let { throw TODO("이미 가입되어 있는 Email") }
+		memberRepository.findByEmail(request.email)?.let { throw ModelNotFoundException(ErrorCode.EMAIL_ALREADY_REGISTERED) }
 		return memberRepository.save(
 			Member(
 				isSocialUser = false,
@@ -60,18 +60,18 @@ class MemberService(
 	}
 
 	fun login(request: MemberLoginRequest): MemberLoginResponse {
-		val user = memberRepository.findByEmail(request.email) ?: throw IllegalArgumentException("member")
+		val user = memberRepository.findByEmail(request.email) ?: throw ModelNotFoundException(ErrorCode.MEMBER_NOT_FOUND)
 
 		if (user.isSocialUser) {
-			throw InvalidCredentialException("social member can not login in hear")
+			throw ForbiddenException(ErrorCode.SOCIAL_MEMBER_CANNOT_LOGIN)
 		}
 
 		if (user.status == MemberStatus.WAIT) {
-			throw InvalidCredentialException("Authenticate not yet")
+			throw ForbiddenException(ErrorCode.AUTHENTICATE_NOT_YET)
 		}
 
 		if (!passwordEncoder.matches(request.password, user.password)) {
-			throw InvalidCredentialException("Wrong password")
+			throw BadRequestException(ErrorCode.WRONG_PASSWORD)
 		}
 
 		return MemberLoginResponse(
@@ -99,8 +99,8 @@ class MemberService(
 				member.isDeleted = true
 			}
 
-			MemberRole.ADMIN -> throw IllegalArgumentException("Admin cannot whitdraw")
-			else -> throw IllegalArgumentException("Invalid role")
+			MemberRole.ADMIN -> throw ForbiddenException(ErrorCode.ADMINISTRATORS_CANNOT_WITHDRAW)
+			else -> throw BadRequestException(ErrorCode.WRONG_ROLE)
 		}
 	}
 }

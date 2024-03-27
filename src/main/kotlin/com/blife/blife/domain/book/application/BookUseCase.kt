@@ -2,6 +2,8 @@ package com.blife.blife.domain.book.application
 
 import com.blife.blife.domain.book.model.Book
 import com.blife.blife.domain.book.service.BookService
+import com.blife.blife.global.exception.ErrorCode
+import com.blife.blife.global.exception.ModelNotFoundException
 import com.blife.blife.infra.external.booksearchapi.BookSearchService
 import org.springframework.stereotype.Service
 
@@ -26,7 +28,7 @@ class BookUseCase(
 		val result: Book? = bookService.getBookByIsbn(isbn)
 			?: bookSearchService.searchBookDetailInfo(isbn)
 
-		return result.takeIf { it != null } ?: throw TODO("데이터가 존재하지 않음")
+		return result.takeIf { it != null } ?: throw ModelNotFoundException(ErrorCode.NO_DATE_EXIST)
 	}
 
 
@@ -35,6 +37,6 @@ class BookUseCase(
 
 		if (result == null) result = bookService.searchBookListByTitle(title, page)
 
-		return result.takeIf { it.isNotEmpty() } ?: throw TODO("데이터가 존재하지 않음")
+		return result.takeIf { it.isNotEmpty() } ?: throw ModelNotFoundException(ErrorCode.NO_DATE_EXIST)
 	}
 }

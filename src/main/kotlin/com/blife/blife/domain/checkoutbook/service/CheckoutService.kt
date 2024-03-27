@@ -11,6 +11,9 @@ import com.blife.blife.global.util.mail.service.MailService
 import com.blife.blife.domain.member.repository.MemberRepository
 import com.blife.blife.domain.review.dto.BookReservationRequest
 import com.blife.blife.domain.wishlist.repository.WishListRepository
+import com.blife.blife.global.exception.ErrorCode
+import com.blife.blife.global.exception.ModelNotFoundException
+import com.blife.blife.global.exception.UnAuthorizationException
 import com.blife.blife.infra.postgresql.library.JpaLibBookRepository
 import com.blife.blife.infra.postgresql.library.JpaLibraryRepository
 import com.blife.blife.infra.postgresql.library.entity.LibBookEntity
@@ -31,7 +34,7 @@ class CheckoutService(
     private val mailService: MailService,
 ) {
     fun getBookCheckoutStatus(libBookId: Long): LibBookStatusResponse {
-        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw TODO("도서관에서 책을 찾을 수 없습니다.")
+        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw ModelNotFoundException(ErrorCode.BOOK_NOT_FOUND)
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
         return if (unreturnedBookCount >= libBook.totalBookCount) {
@@ -53,20 +56,20 @@ class CheckoutService(
 
     fun createReservationBook(userId: Long, request: BookReservationRequest): CheckoutResponse {
         val libBookId = request.libBookId
-        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw TODO("도서관에서 책을 찾을 수 없습니다.")
+        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw ModelNotFoundException(ErrorCode.BOOK_NOT_FOUND)
         val library = libBook.lib
-        val member = memberRepository.findByIdOrNull(userId) ?: throw TODO("멤버를 찾을 수 없습니다.")
+        val member = memberRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException(ErrorCode.MEMBER_NOT_FOUND)
         val possibleBookQuantity = 3
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBookId)
 
         if (unreturnedBookCount >= libBook.totalBookCount) {
-            throw  TODO("이 책의 모든 책이 대출 중입니다.")
+            throw  ModelNotFoundException(ErrorCode.ALL_BOOKS_ARE_ON_LOAN)
         }
 
         // 책을 3권만 빌릴 수 있는 로직이 필요
         val currentLoans = checkoutRepository.countByMemberIdAndReturnedFalse(userId)
         if (currentLoans >= possibleBookQuantity) {
-            throw  TODO("최대 대여 가능한 책의 수를 초과하였습니다.")
+            throw  ModelNotFoundException(ErrorCode.EXCEEDING_THE_MAXIMUM_NUMBER_OF_BOOKS)
         }
 
         // 책의 대여일은 빌린 시간으로 부터 14일이다. (시간은 상관없다)
@@ -101,10 +104,10 @@ class CheckoutService(
         val libBookId = request.libBookId
         val userId = request.memberId
 
-        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw TODO("도서관에서 책을 찾을 수 없습니다.")
-        val member = memberRepository.findByIdOrNull(userId) ?: throw TODO("유저를 찾을 수 없습니다.")
+        val libBook = jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw ModelNotFoundException(ErrorCode.BOOK_NOT_FOUND)
+        val member = memberRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException(ErrorCode.MEMBER_NOT_FOUND)
         val library = libBook.lib
-        val owner = memberRepository.findByIdOrNull(ownerId) ?: throw TODO("유저를 찾을 수 없습니다.")
+        val owner = memberRepository.findByIdOrNull(ownerId) ?: throw ModelNotFoundException(ErrorCode.MEMBER_NOT_FOUND)
 
         // 도서관 소유권 확인
         validateLibraryOwnership(library, owner)
@@ -126,21 +129,21 @@ class CheckoutService(
     private fun validateLibraryOwnership(library: LibraryEntity, owner: Member) {
         val memberLibrary = libraryRepository.findByMember(owner)
         if (library != memberLibrary) {
-            throw  TODO("해당 도서관의 책이 아닙니다.")
+            throw  ModelNotFoundException(ErrorCode.NOT_A_LIBRARY_BOOK)
         }
     }
 
     private fun validateOwnerRole(hasRole: Collection<GrantedAuthority>) {
         val isOwner = hasRole.any { it.getAuthority() == "ROLE_${MemberRole.OWNER.name}" }
         if (!isOwner) {
-            throw  TODO("권한이 없습니다.")
+            throw  UnAuthorizationException(ErrorCode.NO_PERMISSION)
         }
     }
 
     private fun validateBookAvailability(libBook: LibBookEntity) {
         val unreturnedBookCount = checkoutRepository.countByLibBookIdAndReturnedFalse(libBook.id!!)
         if (unreturnedBookCount >= libBook.totalBookCount) {
-            throw  TODO("이 책의 모든 책이 대출 중입니다.")
+            throw  ModelNotFoundException(ErrorCode.ALL_BOOKS_ARE_ON_LOAN)
         }
     }
 
@@ -148,7 +151,7 @@ class CheckoutService(
         val possibleBookQuantity = 3
         val currentLoans = checkoutRepository.countByMemberIdAndReturnedFalse(memberId)
         if (currentLoans >= possibleBookQuantity) {
-            throw  TODO("최대 대여 가능한 책의 수를 초과하였습니다.")
+            throw  ModelNotFoundException(ErrorCode.EXCEEDING_THE_MAXIMUM_NUMBER_OF_BOOKS)
         }
     }
 
@@ -188,7 +191,7 @@ class CheckoutService(
         val libBook = findLibBook(request.libBookId)
         val checkoutBook = findCheckoutBook(request.memberId, request.libBookId)
         val library = libBook.lib
-        val owner = memberRepository.findByIdOrNull(ownerId) ?: throw TODO("유저를 찾을 수 없습니다.")
+        val owner = memberRepository.findByIdOrNull(ownerId) ?: throw ModelNotFoundException(ErrorCode.MEMBER_NOT_FOUND)
 
         // 도서관 오너 로직
         validateOwnership (library , owner)
@@ -203,22 +206,22 @@ class CheckoutService(
     private fun validateRole(hasRole: Collection<GrantedAuthority>) {
         val isOwner = hasRole.any { it.getAuthority() == "ROLE_${MemberRole.OWNER.name}" }
         if (!isOwner) {
-            throw  TODO("권한이 없습니다.")
+            throw  UnAuthorizationException(ErrorCode.NO_PERMISSION)
         }
     }
     private fun validateOwnership(library: LibraryEntity, owner: Member) {
         val memberLibrary = libraryRepository.findByMember(owner)
         if (library != memberLibrary) {
-            throw  TODO("해당 도서관의 책이 아닙니다.")
+            throw  ModelNotFoundException(ErrorCode.NOT_A_LIBRARY_BOOK)
         }
     }
 
     private fun findLibBook(libBookId: Long): LibBookEntity =
-        jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw TODO("도서를 찾을 수 없습니다.")
+        jpaLibBookRepository.findByIdOrNull(libBookId) ?: throw ModelNotFoundException(ErrorCode.BOOK_NOT_FOUND)
 
     private fun findCheckoutBook(userId: Long, libBookId: Long): CheckoutBook =
         checkoutRepository.findByMemberIdAndLibBookIdAndReturnedFalse(userId, libBookId)
-            ?: throw  TODO("대출 기록을 찾을 수 없습니다.")
+            ?: throw  ModelNotFoundException(ErrorCode.LOAN_RECORDS_NOT_FOUND)
 
     private fun markBookAsReturned(checkoutBook: CheckoutBook) {
         checkoutBook.returned = true

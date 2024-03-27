@@ -36,6 +36,8 @@ class SecurityConfig(
 					"/v3/api-docs/**",
 					"/error",
 					"/books/**",
+					"/libraries",
+					"/libraries/search"
 				).permitAll()
 					.anyRequest().authenticated()
 			}

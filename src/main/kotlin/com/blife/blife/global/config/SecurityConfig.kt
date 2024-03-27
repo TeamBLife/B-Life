@@ -4,6 +4,7 @@ import com.blife.blife.global.security.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
@@ -15,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Order(1)
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
 	private val jwtAuthenticationFilter: JwtAuthenticationFilter
 ) {
@@ -33,7 +35,7 @@ class SecurityConfig(
 					"swagger-ui/**",
 					"/v3/api-docs/**",
 					"/error",
-					"/books/**"
+					"/books/**",
 				).permitAll()
 					.anyRequest().authenticated()
 			}
